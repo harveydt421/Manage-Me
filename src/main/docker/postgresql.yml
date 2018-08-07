@@ -1,0 +1,11 @@
+version: '2'
+services:
+    manageme-postgresql:
+        image: postgres:10.4
+        # volumes:
+        #     - ~/volumes/jhipster/ManageMe/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=ManageMe
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
