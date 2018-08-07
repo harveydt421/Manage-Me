@@ -32,8 +32,8 @@ entity Asset {
 }
 
 entity SeparationApplication {
-	dateOfLeaving Date required
-	dateOfSubmission Date
+	dateOfLeaving Instant required
+	dateOfSubmission Instant
 	reasonForLeaving String required
 }
 
