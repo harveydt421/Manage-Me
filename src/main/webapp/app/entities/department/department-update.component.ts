@@ -8,6 +8,8 @@ import { IDepartment } from 'app/shared/model/department.model';
 import { DepartmentService } from './department.service';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from 'app/entities/employee';
+import { ILocation } from 'app/shared/model/location.model';
+import { LocationService } from 'app/entities/location';
 
 @Component({
     selector: 'jhi-department-update',
@@ -21,10 +23,13 @@ export class DepartmentUpdateComponent implements OnInit {
 
     representatives: IEmployee[];
 
+    locations: ILocation[];
+
     constructor(
         private jhiAlertService: JhiAlertService,
         private departmentService: DepartmentService,
         private employeeService: EmployeeService,
+        private locationService: LocationService,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -56,6 +61,21 @@ export class DepartmentUpdateComponent implements OnInit {
                     this.employeeService.find(this.department.representative.id).subscribe(
                         (subRes: HttpResponse<IEmployee>) => {
                             this.representatives = [subRes.body].concat(res.body);
+                        },
+                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                    );
+                }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.locationService.query({ filter: 'department-is-null' }).subscribe(
+            (res: HttpResponse<ILocation[]>) => {
+                if (!this.department.location || !this.department.location.id) {
+                    this.locations = res.body;
+                } else {
+                    this.locationService.find(this.department.location.id).subscribe(
+                        (subRes: HttpResponse<ILocation>) => {
+                            this.locations = [subRes.body].concat(res.body);
                         },
                         (subRes: HttpErrorResponse) => this.onError(subRes.message)
                     );
@@ -96,6 +116,10 @@ export class DepartmentUpdateComponent implements OnInit {
     }
 
     trackEmployeeById(index: number, item: IEmployee) {
+        return item.id;
+    }
+
+    trackLocationById(index: number, item: ILocation) {
         return item.id;
     }
     get department() {

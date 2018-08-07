@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="employee"/>
 
+        <addForeignKeyConstraint baseColumnNames="location_id"
+                                 baseTableName="department"
+                                 constraintName="fk_department_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="location"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -21,6 +21,12 @@
                         <a [routerLink]="['/employee', department.representative?.id, 'view']">{{department.representative?.id}}</a>
                     </div>
                 </dd>
+                <dt><span>Location</span></dt>
+                <dd>
+                    <div *ngIf="department.location">
+                        <a [routerLink]="['/location', department.location?.id, 'view']">{{department.location?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

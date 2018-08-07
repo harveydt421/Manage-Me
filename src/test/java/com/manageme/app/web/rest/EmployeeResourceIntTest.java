@@ -4,6 +4,7 @@ import com.manageme.app.ManageMeApp;
 
 import com.manageme.app.domain.Employee;
 import com.manageme.app.repository.EmployeeRepository;
+import com.manageme.app.service.EmployeeService;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -54,6 +55,10 @@ public class EmployeeResourceIntTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -74,7 +79,7 @@ public class EmployeeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EmployeeResource employeeResource = new EmployeeResource(employeeRepository);
+        final EmployeeResource employeeResource = new EmployeeResource(employeeService);
         this.restEmployeeMockMvc = MockMvcBuilders.standaloneSetup(employeeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -260,7 +265,7 @@ public class EmployeeResourceIntTest {
     @Transactional
     public void updateEmployee() throws Exception {
         // Initialize the database
-        employeeRepository.saveAndFlush(employee);
+        employeeService.save(employee);
 
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
@@ -311,7 +316,7 @@ public class EmployeeResourceIntTest {
     @Transactional
     public void deleteEmployee() throws Exception {
         // Initialize the database
-        employeeRepository.saveAndFlush(employee);
+        employeeService.save(employee);
 
         int databaseSizeBeforeDelete = employeeRepository.findAll().size();
 

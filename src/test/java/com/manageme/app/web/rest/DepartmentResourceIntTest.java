@@ -4,6 +4,7 @@ import com.manageme.app.ManageMeApp;
 
 import com.manageme.app.domain.Department;
 import com.manageme.app.repository.DepartmentRepository;
+import com.manageme.app.service.DepartmentService;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,6 +46,10 @@ public class DepartmentResourceIntTest {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -65,7 +70,7 @@ public class DepartmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DepartmentResource departmentResource = new DepartmentResource(departmentRepository);
+        final DepartmentResource departmentResource = new DepartmentResource(departmentService);
         this.restDepartmentMockMvc = MockMvcBuilders.standaloneSetup(departmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -185,7 +190,7 @@ public class DepartmentResourceIntTest {
     @Transactional
     public void updateDepartment() throws Exception {
         // Initialize the database
-        departmentRepository.saveAndFlush(department);
+        departmentService.save(department);
 
         int databaseSizeBeforeUpdate = departmentRepository.findAll().size();
 
@@ -230,7 +235,7 @@ public class DepartmentResourceIntTest {
     @Transactional
     public void deleteDepartment() throws Exception {
         // Initialize the database
-        departmentRepository.saveAndFlush(department);
+        departmentService.save(department);
 
         int databaseSizeBeforeDelete = departmentRepository.findAll().size();
 

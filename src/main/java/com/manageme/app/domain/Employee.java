@@ -1,5 +1,6 @@
 package com.manageme.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -44,6 +45,10 @@ public class Employee implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private Asset asset;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -117,6 +122,19 @@ public class Employee implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public Employee asset(Asset asset) {
+        this.asset = asset;
+        return this;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

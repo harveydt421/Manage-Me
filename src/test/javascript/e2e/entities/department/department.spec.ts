@@ -34,6 +34,7 @@ describe('Department e2e test', () => {
         expect(departmentUpdatePage.getNameInput()).toMatch('name');
         departmentUpdatePage.headSelectLastOption();
         departmentUpdatePage.representativeSelectLastOption();
+        departmentUpdatePage.locationSelectLastOption();
         departmentUpdatePage.save();
         expect(departmentUpdatePage.getSaveButton().isPresent()).toBeFalsy();
     });

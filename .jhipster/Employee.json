@@ -40,13 +40,19 @@
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "employee"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20180807154715",
     "entityTableName": "employee",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",
