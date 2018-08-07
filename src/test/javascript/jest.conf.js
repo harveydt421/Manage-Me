@@ -19,5 +19,5 @@ module.exports = {
     transformIgnorePatterns: ['node_modules/(?!@angular/common/locales)'],
     testMatch: ['<rootDir>/src/test/javascript/spec/**/+(*.)+(spec.ts)'],
     rootDir: '../../../',
-    testUrl: 'http://localhost'
+    testURL: 'http://localhost'
 };
