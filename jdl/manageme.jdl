@@ -8,3 +8,12 @@ entity Employee {
 relationship OneToOne {
     Employee{user} to User
 }
+
+entity Department {
+	name String required
+}
+
+relationship OneToOne {
+	Department{head} to Employee,
+	Department{representative} to Employee
+}
