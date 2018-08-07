@@ -39,6 +39,7 @@ describe('Employee e2e test', () => {
         employeeUpdatePage.setPhoneNumberInput('phoneNumber');
         expect(employeeUpdatePage.getPhoneNumberInput()).toMatch('phoneNumber');
         employeeUpdatePage.userSelectLastOption();
+        employeeUpdatePage.assetSelectLastOption();
         employeeUpdatePage.save();
         expect(employeeUpdatePage.getSaveButton().isPresent()).toBeFalsy();
     });

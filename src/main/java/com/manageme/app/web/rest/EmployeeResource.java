@@ -2,7 +2,7 @@ package com.manageme.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.manageme.app.domain.Employee;
-import com.manageme.app.repository.EmployeeRepository;
+import com.manageme.app.service.EmployeeService;
 import com.manageme.app.web.rest.errors.BadRequestAlertException;
 import com.manageme.app.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -29,10 +29,10 @@ public class EmployeeResource {
 
     private static final String ENTITY_NAME = "employee";
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeResource(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeResource(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     /**
@@ -49,7 +49,7 @@ public class EmployeeResource {
         if (employee.getId() != null) {
             throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Employee result = employeeRepository.save(employee);
+        Employee result = employeeService.save(employee);
         return ResponseEntity.created(new URI("/api/employees/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +71,7 @@ public class EmployeeResource {
         if (employee.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Employee result = employeeRepository.save(employee);
+        Employee result = employeeService.save(employee);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))
             .body(result);
@@ -86,7 +86,7 @@ public class EmployeeResource {
     @Timed
     public List<Employee> getAllEmployees() {
         log.debug("REST request to get all Employees");
-        return employeeRepository.findAll();
+        return employeeService.findAll();
     }
 
     /**
@@ -99,7 +99,7 @@ public class EmployeeResource {
     @Timed
     public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
         log.debug("REST request to get Employee : {}", id);
-        Optional<Employee> employee = employeeRepository.findById(id);
+        Optional<Employee> employee = employeeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(employee);
     }
 
@@ -113,8 +113,7 @@ public class EmployeeResource {
     @Timed
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         log.debug("REST request to delete Employee : {}", id);
-
-        employeeRepository.deleteById(id);
+        employeeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

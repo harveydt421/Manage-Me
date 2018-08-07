@@ -1,0 +1,48 @@
+{
+    "name": "SeparationApplication",
+    "fields": [
+        {
+            "fieldName": "dateOfLeaving",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateOfSubmission",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "reasonForLeaving",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "employee",
+            "otherEntityName": "employee",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "separationApplication"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "lineItem",
+            "otherEntityName": "lineItem",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180807172500",
+    "entityTableName": "separation_application",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

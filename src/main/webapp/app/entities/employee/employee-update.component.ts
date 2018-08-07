@@ -7,6 +7,8 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from './employee.service';
 import { IUser, UserService } from 'app/core';
+import { IAsset } from 'app/shared/model/asset.model';
+import { AssetService } from 'app/entities/asset';
 
 @Component({
     selector: 'jhi-employee-update',
@@ -18,10 +20,13 @@ export class EmployeeUpdateComponent implements OnInit {
 
     users: IUser[];
 
+    assets: IAsset[];
+
     constructor(
         private jhiAlertService: JhiAlertService,
         private employeeService: EmployeeService,
         private userService: UserService,
+        private assetService: AssetService,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -33,6 +38,12 @@ export class EmployeeUpdateComponent implements OnInit {
         this.userService.query().subscribe(
             (res: HttpResponse<IUser[]>) => {
                 this.users = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.assetService.query().subscribe(
+            (res: HttpResponse<IAsset[]>) => {
+                this.assets = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -69,6 +80,10 @@ export class EmployeeUpdateComponent implements OnInit {
     }
 
     trackUserById(index: number, item: IUser) {
+        return item.id;
+    }
+
+    trackAssetById(index: number, item: IAsset) {
         return item.id;
     }
     get employee() {

@@ -1,0 +1,28 @@
+{
+    "name": "LineItem",
+    "fields": [
+        {
+            "fieldName": "feedback",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "assetOwed",
+            "otherEntityName": "asset",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "lineItem"
+        }
+    ],
+    "changelogDate": "20180807172501",
+    "entityTableName": "line_item",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

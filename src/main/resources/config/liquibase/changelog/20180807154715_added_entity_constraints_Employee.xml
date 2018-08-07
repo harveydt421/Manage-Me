@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="asset_id"
+                                 baseTableName="employee"
+                                 constraintName="fk_employee_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+
     </changeSet>
 </databaseChangeLog>

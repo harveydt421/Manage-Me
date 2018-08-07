@@ -20,6 +20,7 @@ export class DepartmentUpdatePage {
     nameInput = element(by.id('field_name'));
     headSelect = element(by.id('field_head'));
     representativeSelect = element(by.id('field_representative'));
+    locationSelect = element(by.id('field_location'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -69,6 +70,25 @@ export class DepartmentUpdatePage {
 
     getRepresentativeSelectedOption() {
         return this.representativeSelect.element(by.css('option:checked')).getText();
+    }
+
+    locationSelectLastOption(): promise.Promise<void> {
+        return this.locationSelect
+            .all(by.tagName('option'))
+            .last()
+            .click();
+    }
+
+    locationSelectOption(option): promise.Promise<void> {
+        return this.locationSelect.sendKeys(option);
+    }
+
+    getLocationSelect(): ElementFinder {
+        return this.locationSelect;
+    }
+
+    getLocationSelectedOption() {
+        return this.locationSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {
