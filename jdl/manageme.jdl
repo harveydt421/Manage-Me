@@ -17,3 +17,39 @@ relationship OneToOne {
 	Department{head} to Employee,
 	Department{representative} to Employee
 }
+
+entity Location {
+	streetAddress String required
+	postalCode Integer required
+	city String required
+	state String required
+	country String required
+}
+
+entity Asset {
+	name String required
+	value BigDecimal required
+}
+
+entity SeparationApplication {
+	dateOfLeaving Date required
+	dateOfSubmission Date
+	reasonForLeaving String required
+}
+
+entity LineItem {
+	feedback String
+}
+
+relationship OneToOne {
+	SeparationApplication{employee} to Employee,
+	LineItem{assetOwed} to Asset,
+	Department{location} to Location
+}
+
+relationship ManyToOne {
+	Employee{asset} to Asset,
+	SeparationApplication{lineItem} to LineItem
+}
+
+service * with serviceClass
