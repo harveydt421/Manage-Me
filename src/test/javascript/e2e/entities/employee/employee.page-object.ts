@@ -17,39 +17,12 @@ export class EmployeeUpdatePage {
     pageTitle = element(by.id('jhi-employee-heading'));
     saveButton = element(by.id('save-entity'));
     cancelButton = element(by.id('cancel-save'));
-    firstNameInput = element(by.id('field_firstName'));
-    lastNameInput = element(by.id('field_lastName'));
-    emailInput = element(by.id('field_email'));
     phoneNumberInput = element(by.id('field_phoneNumber'));
     userSelect = element(by.id('field_user'));
     assetSelect = element(by.id('field_asset'));
 
     getPageTitle() {
         return this.pageTitle.getText();
-    }
-
-    setFirstNameInput(firstName): promise.Promise<void> {
-        return this.firstNameInput.sendKeys(firstName);
-    }
-
-    getFirstNameInput() {
-        return this.firstNameInput.getAttribute('value');
-    }
-
-    setLastNameInput(lastName): promise.Promise<void> {
-        return this.lastNameInput.sendKeys(lastName);
-    }
-
-    getLastNameInput() {
-        return this.lastNameInput.getAttribute('value');
-    }
-
-    setEmailInput(email): promise.Promise<void> {
-        return this.emailInput.sendKeys(email);
-    }
-
-    getEmailInput() {
-        return this.emailInput.getAttribute('value');
     }
 
     setPhoneNumberInput(phoneNumber): promise.Promise<void> {
