@@ -1,7 +1,4 @@
 entity Employee {
-    firstName String required
-    lastName String required
-    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
     phoneNumber String required
 }
 
