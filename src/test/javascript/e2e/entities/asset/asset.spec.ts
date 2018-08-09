@@ -34,6 +34,7 @@ describe('Asset e2e test', () => {
         expect(assetUpdatePage.getNameInput()).toMatch('name');
         assetUpdatePage.setValueInput('5');
         expect(assetUpdatePage.getValueInput()).toMatch('5');
+        assetUpdatePage.employeeSelectLastOption();
         assetUpdatePage.save();
         expect(assetUpdatePage.getSaveButton().isPresent()).toBeFalsy();
     });
