@@ -13,6 +13,12 @@
                 <dd>
                     <span>{{asset.value}}</span>
                 </dd>
+                <dt><span>Employee</span></dt>
+                <dd>
+                    <div *ngIf="asset.employee">
+                        <a [routerLink]="['/employee', asset.employee?.id, 'view']">{{asset.employee?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

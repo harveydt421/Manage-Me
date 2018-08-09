@@ -19,6 +19,7 @@ export class AssetUpdatePage {
     cancelButton = element(by.id('cancel-save'));
     nameInput = element(by.id('field_name'));
     valueInput = element(by.id('field_value'));
+    employeeSelect = element(by.id('field_employee'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -38,6 +39,25 @@ export class AssetUpdatePage {
 
     getValueInput() {
         return this.valueInput.getAttribute('value');
+    }
+
+    employeeSelectLastOption(): promise.Promise<void> {
+        return this.employeeSelect
+            .all(by.tagName('option'))
+            .last()
+            .click();
+    }
+
+    employeeSelectOption(option): promise.Promise<void> {
+        return this.employeeSelect.sendKeys(option);
+    }
+
+    getEmployeeSelect(): ElementFinder {
+        return this.employeeSelect;
+    }
+
+    getEmployeeSelectedOption() {
+        return this.employeeSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {

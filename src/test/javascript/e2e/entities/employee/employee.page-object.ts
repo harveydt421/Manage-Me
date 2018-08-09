@@ -19,7 +19,6 @@ export class EmployeeUpdatePage {
     cancelButton = element(by.id('cancel-save'));
     phoneNumberInput = element(by.id('field_phoneNumber'));
     userSelect = element(by.id('field_user'));
-    assetSelect = element(by.id('field_asset'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -50,25 +49,6 @@ export class EmployeeUpdatePage {
 
     getUserSelectedOption() {
         return this.userSelect.element(by.css('option:checked')).getText();
-    }
-
-    assetSelectLastOption(): promise.Promise<void> {
-        return this.assetSelect
-            .all(by.tagName('option'))
-            .last()
-            .click();
-    }
-
-    assetSelectOption(option): promise.Promise<void> {
-        return this.assetSelect.sendKeys(option);
-    }
-
-    getAssetSelect(): ElementFinder {
-        return this.assetSelect;
-    }
-
-    getAssetSelectedOption() {
-        return this.assetSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {

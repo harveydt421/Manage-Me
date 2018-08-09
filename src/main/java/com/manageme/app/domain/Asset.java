@@ -1,5 +1,6 @@
 package com.manageme.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,6 +33,10 @@ public class Asset implements Serializable {
     @NotNull
     @Column(name = "jhi_value", precision = 10, scale = 2, nullable = false)
     private BigDecimal value;
+
+    @ManyToOne
+    @JsonIgnoreProperties("assets")
+    private Employee employee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -66,6 +71,19 @@ public class Asset implements Serializable {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public Asset employee(Employee employee) {
+        this.employee = employee;
+        return this;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

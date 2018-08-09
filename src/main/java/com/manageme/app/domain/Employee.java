@@ -1,6 +1,6 @@
 package com.manageme.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -33,9 +35,9 @@ public class Employee implements Serializable {
     @JoinColumn(unique = true)
     private User user;
 
-    @ManyToOne
-    @JsonIgnoreProperties("")
-    private Asset asset;
+    @OneToMany(mappedBy = "employee")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Asset> assets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -72,17 +74,29 @@ public class Employee implements Serializable {
         this.user = user;
     }
 
-    public Asset getAsset() {
-        return asset;
+    public Set<Asset> getAssets() {
+        return assets;
     }
 
-    public Employee asset(Asset asset) {
-        this.asset = asset;
+    public Employee assets(Set<Asset> assets) {
+        this.assets = assets;
         return this;
     }
 
-    public void setAsset(Asset asset) {
-        this.asset = asset;
+    public Employee addAsset(Asset asset) {
+        this.assets.add(asset);
+        asset.setEmployee(this);
+        return this;
+    }
+
+    public Employee removeAsset(Asset asset) {
+        this.assets.remove(asset);
+        asset.setEmployee(null);
+        return this;
+    }
+
+    public void setAssets(Set<Asset> assets) {
+        this.assets = assets;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
