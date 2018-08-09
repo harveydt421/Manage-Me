@@ -1,8 +1,10 @@
 package com.manageme.app.service;
 
 import com.manageme.app.domain.Authority;
+import com.manageme.app.domain.Employee;
 import com.manageme.app.domain.User;
 import com.manageme.app.repository.AuthorityRepository;
+import com.manageme.app.repository.EmployeeRepository;
 import com.manageme.app.config.Constants;
 import com.manageme.app.repository.UserRepository;
 import com.manageme.app.security.AuthoritiesConstants;
@@ -36,6 +38,8 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    
+    private final EmployeeRepository employeeRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -43,11 +47,12 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, EmployeeRepository employeeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.employeeRepository = employeeRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -141,6 +146,16 @@ public class UserService {
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+        return user;
+    }
+    
+    public User createUser(UserDTO userDTO, String phoneNumber) {
+        User user = createUser(userDTO);
+        // Create and save the Employee
+        Employee employee = new Employee();
+        employee.setUser(user);
+        employee.setPhoneNumber(phoneNumber);
+        employeeRepository.save(employee);
         return user;
     }
 

@@ -15,6 +15,8 @@ public final class AuthoritiesConstants {
     
     public static final String FUNCTIONAL_REPRESENTATIVE = "ROLE_FUNCTIONAL_REPRESENTATIVE";
 
+    public static final String REGULAR_EMPLOYEE = "ROLE_REGULAR_EMPLOYEE";
+    
     private AuthoritiesConstants() {
     }
 }

@@ -30,12 +30,6 @@ describe('Employee e2e test', () => {
 
     it('should create and save Employees', () => {
         employeeComponentsPage.clickOnCreateButton();
-        employeeUpdatePage.setFirstNameInput('firstName');
-        expect(employeeUpdatePage.getFirstNameInput()).toMatch('firstName');
-        employeeUpdatePage.setLastNameInput('lastName');
-        expect(employeeUpdatePage.getLastNameInput()).toMatch('lastName');
-        employeeUpdatePage.setEmailInput('email');
-        expect(employeeUpdatePage.getEmailInput()).toMatch('email');
         employeeUpdatePage.setPhoneNumberInput('phoneNumber');
         expect(employeeUpdatePage.getPhoneNumberInput()).toMatch('phoneNumber');
         employeeUpdatePage.userSelectLastOption();

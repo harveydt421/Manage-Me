@@ -15,9 +15,6 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>First Name</span></th>
-            <th><span>Last Name</span></th>
-            <th><span>Email</span></th>
             <th><span>Phone Number</span></th>
             <th><span>User</span></th>
             <th><span>Asset</span></th>
@@ -27,9 +24,6 @@
             <tbody>
             <tr *ngFor="let employee of employees ;trackBy: trackId">
                 <td><a [routerLink]="['/employee', employee.id, 'view' ]">{{employee.id}}</a></td>
-                <td>{{employee.firstName}}</td>
-                <td>{{employee.lastName}}</td>
-                <td>{{employee.email}}</td>
                 <td>{{employee.phoneNumber}}</td>
                 <td>
                     {{employee.user?.id}}

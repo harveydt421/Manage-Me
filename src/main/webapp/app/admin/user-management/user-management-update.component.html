@@ -90,6 +90,11 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                	<label class="form-control-label">Phone Number</label>
+                	<input type="tel" class="form-control" name="phoneNumber" #phoneNumberInput="ngModel"
+                	[(ngModel)]="user.phoneNumber" maxlength="50" tel>	
+                </div>
                 <div class="form-check">
                     <label class="form-check-label" for="activated">
                         <input class="form-check-input" [disabled]="user.id === null" type="checkbox" id="activated" name="activated" [(ngModel)]="user.activated">
