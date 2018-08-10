@@ -22,4 +22,4 @@ test:
         - chmod +x gradlew
         - ./gradlew clean test --no-daemon
         - yarn test
-        - ./gradlew bootWar -Pprod -x test --no-daemon
+        #- ./gradlew bootWar -Pprod -x test --no-daemon
