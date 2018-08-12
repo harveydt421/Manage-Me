@@ -2,6 +2,9 @@ package com.manageme.app.service;
 
 import com.manageme.app.domain.SeparationApplication;
 import com.manageme.app.repository.SeparationApplicationRepository;
+import com.manageme.app.security.AuthoritiesConstants;
+import com.manageme.app.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +36,8 @@ public class SeparationApplicationService {
      * @return the persisted entity
      */
     public SeparationApplication save(SeparationApplication separationApplication) {
-        log.debug("Request to save SeparationApplication : {}", separationApplication);        return separationApplicationRepository.save(separationApplication);
+        log.debug("Request to save SeparationApplication : {}", separationApplication);
+        return separationApplicationRepository.save(separationApplication);
     }
 
     /**
@@ -44,7 +48,13 @@ public class SeparationApplicationService {
     @Transactional(readOnly = true)
     public List<SeparationApplication> findAll() {
         log.debug("Request to get all SeparationApplications");
-        return separationApplicationRepository.findAll();
+        List<SeparationApplication> result;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {	
+        	result = separationApplicationRepository.findAll();
+        } else {
+        	 result = separationApplicationRepository.findAllByEmployeeUserLogin(SecurityUtils.getCurrentUserLogin().get());
+        }
+        return result;
     }
 
 
@@ -57,7 +67,13 @@ public class SeparationApplicationService {
     @Transactional(readOnly = true)
     public Optional<SeparationApplication> findOne(Long id) {
         log.debug("Request to get SeparationApplication : {}", id);
-        return separationApplicationRepository.findById(id);
+        Optional<SeparationApplication> result;
+        if  (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        	result = separationApplicationRepository.findById(id);        	
+        } else {
+        	result = separationApplicationRepository.findOneByIdAndEmployeeUserLogin(SecurityUtils.getCurrentUserLogin().get(), id);
+        }
+        return result;
     }
 
     /**
