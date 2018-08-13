@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -43,6 +44,8 @@ public class LineItemResource {
      */
     @PostMapping("/line-items")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     public ResponseEntity<LineItem> createLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
         log.debug("REST request to save LineItem : {}", lineItem);
         if (lineItem.getId() != null) {
@@ -65,6 +68,8 @@ public class LineItemResource {
      */
     @PutMapping("/line-items")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     public ResponseEntity<LineItem> updateLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
         log.debug("REST request to update LineItem : {}", lineItem);
         if (lineItem.getId() == null) {
@@ -110,6 +115,8 @@ public class LineItemResource {
      */
     @DeleteMapping("/line-items/{id}")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     public ResponseEntity<Void> deleteLineItem(@PathVariable Long id) {
         log.debug("REST request to delete LineItem : {}", id);
         lineItemService.delete(id);
