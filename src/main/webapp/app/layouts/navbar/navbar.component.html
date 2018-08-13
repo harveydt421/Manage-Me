@@ -28,7 +28,22 @@
                         </span>
                     </span>
                 </a>
-                <ul class="dropdown-menu" ngbDropdownMenu>
+               
+               <ul *jhiHasAnyAuthority="'ROLE_USER'" class="dropdown-menu" ngbDropdownMenu>
+               <li>
+                        <a class="dropdown-item" routerLink="separation-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
+                            <span>Separation Application</span>
+                        </a>
+               </li>
+               </ul>
+               
+               
+               
+               
+               
+               
+                <ul *jhiHasAnyAuthority="'ROLE_ADMIN'" class="dropdown-menu" ngbDropdownMenu>
                     <li>
                         <a class="dropdown-item" routerLink="employee" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
