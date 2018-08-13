@@ -10,4 +10,5 @@ export interface IEmployee {
 
 export class Employee implements IEmployee {
     constructor(public id?: number, public phoneNumber?: string, public user?: IUser, public asset?: IAsset) {}
+
 }
