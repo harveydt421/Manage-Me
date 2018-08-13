@@ -16,7 +16,14 @@
             ]
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "employee",
+            "otherEntityName": "employee",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20180807172459",
     "entityTableName": "asset",
     "dto": "no",

@@ -5,10 +5,9 @@ export interface IEmployee {
     id?: number;
     phoneNumber?: string;
     user?: IUser;
-    asset?: IAsset;
+    assets?: IAsset[];
 }
 
 export class Employee implements IEmployee {
-    constructor(public id?: number, public phoneNumber?: string, public user?: IUser, public asset?: IAsset) {}
-
+    constructor(public id?: number, public phoneNumber?: string, public user?: IUser, public assets?: IAsset[]) {}
 }

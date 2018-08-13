@@ -25,12 +25,6 @@
                 <dd>
                     {{employee.user?.login}}
                 </dd>
-                <dt><span>Asset</span></dt>
-                <dd>
-                    <div *ngIf="employee.asset">
-                        <a [routerLink]="['/asset', employee.asset?.id, 'view']">{{employee.asset?.id}}</a>
-                    </div>
-                </dd>
             </dl>
 
             <button type="submit"

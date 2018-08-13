@@ -19,10 +19,10 @@
             "otherEntityRelationshipName": "employee"
         },
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "one-to-many",
             "relationshipName": "asset",
             "otherEntityName": "asset",
-            "otherEntityField": "id"
+            "otherEntityRelationshipName": "employee"
         }
     ],
     "changelogDate": "20180807154715",

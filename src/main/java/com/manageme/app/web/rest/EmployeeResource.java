@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,6 +45,7 @@ public class EmployeeResource {
      */
     @PostMapping("/employees")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
         log.debug("REST request to save Employee : {}", employee);
         if (employee.getId() != null) {
@@ -66,6 +68,7 @@ public class EmployeeResource {
      */
     @PutMapping("/employees")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
         log.debug("REST request to update Employee : {}", employee);
         if (employee.getId() == null) {
@@ -111,6 +114,7 @@ public class EmployeeResource {
      */
     @DeleteMapping("/employees/{id}")
     @Timed
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeService.delete(id);

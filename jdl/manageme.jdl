@@ -45,8 +45,11 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-	Employee{asset} to Asset,
 	SeparationApplication{lineItem} to LineItem
+}
+
+relationship OneToMany {
+	Employee{asset} to Asset{employee}
 }
 
 service * with serviceClass
