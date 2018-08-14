@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_dateOfSubmission">Date Of Submission</label>
                     <div class="d-flex">
-                        <input id="field_dateOfSubmission" type="datetime-local" class="form-control" name="dateOfSubmission" [(ngModel)]="dateOfSubmission"
+                        <input id="field_dateOfSubmission" type="datetime-local" class="form-control" name="dateOfSubmission" [(ngModel)]="dateOfSubmission" disabled
                         />
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         <option [ngValue]="employeeOption.id === separationApplication.employee?.id ? separationApplication.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.id}}</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div *jhiHasAnyAuthority="'ROLE_FUNCTIONAL_REPRESENTATIVE'" class="form-group">
                     <label class="form-control-label" for="field_lineItem">Line Item</label>
                     <select class="form-control" id="field_lineItem" name="lineItem" [(ngModel)]="separationApplication.lineItem" >
                         <option [ngValue]="null"></option>

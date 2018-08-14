@@ -2,6 +2,10 @@ package com.manageme.app.service;
 
 import com.manageme.app.domain.Employee;
 import com.manageme.app.repository.EmployeeRepository;
+import com.manageme.app.repository.SeparationApplicationRepository;
+import com.manageme.app.security.AuthoritiesConstants;
+import com.manageme.app.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +48,13 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<Employee> findAll() {
         log.debug("Request to get all Employees");
-        return employeeRepository.findAll();
+        List<Employee> result;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        	result = employeeRepository.findAll();        	
+        } else {
+        	result = employeeRepository.findAllByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+        }
+        return result;
     }
 
 
