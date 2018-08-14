@@ -18,6 +18,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+        	"fieldName": "completed",
+        	"fieldType": "Boolean"
         }
     ],
     "relationships": [

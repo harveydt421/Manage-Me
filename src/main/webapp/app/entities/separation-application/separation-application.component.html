@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Separation Applications</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']" *ngIf="!isPending()">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Separation Application
@@ -12,13 +12,13 @@
     <br/>
     <div class="table-responsive" *ngIf="separationApplications">
         <table class="table table-striped">
-        <table class="table table-striped" *ngIf="isPending()">
             <thead>
             <tr>
             <th><span>ID</span></th>
             <th><span>Date Of Leaving</span></th>
             <th><span>Date Of Submission</span></th>
             <th><span>Reason For Leaving</span></th>
+            <th><span>Completed</span></th>
             <th><span>Employee</span></th>
             <th><span>Line Item</span></th>
             <th></th>
@@ -30,6 +30,7 @@
                 <td>{{separationApplication.dateOfLeaving | date:'medium'}}</td>
                 <td>{{separationApplication.dateOfSubmission | date:'medium'}}</td>
                 <td>{{separationApplication.reasonForLeaving}}</td>
+                <td>{{separationApplication.completed}}</td>
                 <td>
                     <div *ngIf="separationApplication.employee">
                         <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee?.id}}</a>
@@ -40,7 +41,7 @@
                         <a [routerLink]="['../line-item', separationApplication.lineItem?.id, 'view' ]" >{{separationApplication.lineItem?.id}}</a>
                     </div>
                 </td>
-                <td class="text-right" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/separation-application', separationApplication.id, 'view' ]"

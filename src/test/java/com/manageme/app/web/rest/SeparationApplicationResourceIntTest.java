@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ManageMeApp.class)
-@WithMockUser(username="admin", authorities={"ROLE_ADMIN"}, password = "admin")
 public class SeparationApplicationResourceIntTest {
 
     private static final Instant DEFAULT_DATE_OF_LEAVING = Instant.ofEpochMilli(0L);
@@ -52,6 +50,9 @@ public class SeparationApplicationResourceIntTest {
 
     private static final String DEFAULT_REASON_FOR_LEAVING = "AAAAAAAAAA";
     private static final String UPDATED_REASON_FOR_LEAVING = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_COMPLETED = false;
+    private static final Boolean UPDATED_COMPLETED = true;
 
     @Autowired
     private SeparationApplicationRepository separationApplicationRepository;
@@ -98,7 +99,8 @@ public class SeparationApplicationResourceIntTest {
         SeparationApplication separationApplication = new SeparationApplication()
             .dateOfLeaving(DEFAULT_DATE_OF_LEAVING)
             .dateOfSubmission(DEFAULT_DATE_OF_SUBMISSION)
-            .reasonForLeaving(DEFAULT_REASON_FOR_LEAVING);
+            .reasonForLeaving(DEFAULT_REASON_FOR_LEAVING)
+            .completed(DEFAULT_COMPLETED);
         return separationApplication;
     }
 
@@ -125,6 +127,7 @@ public class SeparationApplicationResourceIntTest {
         assertThat(testSeparationApplication.getDateOfLeaving()).isEqualTo(DEFAULT_DATE_OF_LEAVING);
         assertThat(testSeparationApplication.getDateOfSubmission()).isEqualTo(DEFAULT_DATE_OF_SUBMISSION);
         assertThat(testSeparationApplication.getReasonForLeaving()).isEqualTo(DEFAULT_REASON_FOR_LEAVING);
+        assertThat(testSeparationApplication.isCompleted()).isEqualTo(DEFAULT_COMPLETED);
     }
 
     @Test
@@ -195,7 +198,8 @@ public class SeparationApplicationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(separationApplication.getId().intValue())))
             .andExpect(jsonPath("$.[*].dateOfLeaving").value(hasItem(DEFAULT_DATE_OF_LEAVING.toString())))
             .andExpect(jsonPath("$.[*].dateOfSubmission").value(hasItem(DEFAULT_DATE_OF_SUBMISSION.toString())))
-            .andExpect(jsonPath("$.[*].reasonForLeaving").value(hasItem(DEFAULT_REASON_FOR_LEAVING.toString())));
+            .andExpect(jsonPath("$.[*].reasonForLeaving").value(hasItem(DEFAULT_REASON_FOR_LEAVING.toString())))
+            .andExpect(jsonPath("$.[*].completed").value(hasItem(DEFAULT_COMPLETED.booleanValue())));
     }
     
 
@@ -212,7 +216,8 @@ public class SeparationApplicationResourceIntTest {
             .andExpect(jsonPath("$.id").value(separationApplication.getId().intValue()))
             .andExpect(jsonPath("$.dateOfLeaving").value(DEFAULT_DATE_OF_LEAVING.toString()))
             .andExpect(jsonPath("$.dateOfSubmission").value(DEFAULT_DATE_OF_SUBMISSION.toString()))
-            .andExpect(jsonPath("$.reasonForLeaving").value(DEFAULT_REASON_FOR_LEAVING.toString()));
+            .andExpect(jsonPath("$.reasonForLeaving").value(DEFAULT_REASON_FOR_LEAVING.toString()))
+            .andExpect(jsonPath("$.completed").value(DEFAULT_COMPLETED.booleanValue()));
     }
     @Test
     @Transactional
@@ -237,7 +242,8 @@ public class SeparationApplicationResourceIntTest {
         updatedSeparationApplication
             .dateOfLeaving(UPDATED_DATE_OF_LEAVING)
             .dateOfSubmission(UPDATED_DATE_OF_SUBMISSION)
-            .reasonForLeaving(UPDATED_REASON_FOR_LEAVING);
+            .reasonForLeaving(UPDATED_REASON_FOR_LEAVING)
+            .completed(UPDATED_COMPLETED);
 
         restSeparationApplicationMockMvc.perform(put("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -251,6 +257,7 @@ public class SeparationApplicationResourceIntTest {
         assertThat(testSeparationApplication.getDateOfLeaving()).isEqualTo(UPDATED_DATE_OF_LEAVING);
         assertThat(testSeparationApplication.getDateOfSubmission()).isEqualTo(UPDATED_DATE_OF_SUBMISSION);
         assertThat(testSeparationApplication.getReasonForLeaving()).isEqualTo(UPDATED_REASON_FOR_LEAVING);
+        assertThat(testSeparationApplication.isCompleted()).isEqualTo(UPDATED_COMPLETED);
     }
 
     @Test

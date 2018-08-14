@@ -37,6 +37,9 @@ public class SeparationApplication implements Serializable {
     @Column(name = "reason_for_leaving", nullable = false)
     private String reasonForLeaving;
 
+    @Column(name = "completed")
+    private Boolean completed;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Employee employee;
@@ -93,6 +96,19 @@ public class SeparationApplication implements Serializable {
         this.reasonForLeaving = reasonForLeaving;
     }
 
+    public Boolean isCompleted() {
+        return completed;
+    }
+
+    public SeparationApplication completed(Boolean completed) {
+        this.completed = completed;
+        return this;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
@@ -147,6 +163,7 @@ public class SeparationApplication implements Serializable {
             ", dateOfLeaving='" + getDateOfLeaving() + "'" +
             ", dateOfSubmission='" + getDateOfSubmission() + "'" +
             ", reasonForLeaving='" + getReasonForLeaving() + "'" +
+            ", completed='" + isCompleted() + "'" +
             "}";
     }
 }

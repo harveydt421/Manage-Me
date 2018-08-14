@@ -20,6 +20,7 @@ export class SeparationApplicationUpdatePage {
     dateOfLeavingInput = element(by.id('field_dateOfLeaving'));
     dateOfSubmissionInput = element(by.id('field_dateOfSubmission'));
     reasonForLeavingInput = element(by.id('field_reasonForLeaving'));
+    completedInput = element(by.id('field_completed'));
     employeeSelect = element(by.id('field_employee'));
     lineItemSelect = element(by.id('field_lineItem'));
 
@@ -51,6 +52,9 @@ export class SeparationApplicationUpdatePage {
         return this.reasonForLeavingInput.getAttribute('value');
     }
 
+    getCompletedInput() {
+        return this.completedInput;
+    }
     employeeSelectLastOption(): promise.Promise<void> {
         return this.employeeSelect
             .all(by.tagName('option'))

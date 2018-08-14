@@ -55,8 +55,4 @@ export class SeparationApplicationComponent implements OnInit, OnDestroy {
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
-
-    isPending() {
-        return this.separationApplications.length > 0;
-    }
 }

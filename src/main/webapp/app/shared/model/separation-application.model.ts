@@ -7,6 +7,7 @@ export interface ISeparationApplication {
     dateOfLeaving?: Moment;
     dateOfSubmission?: Moment;
     reasonForLeaving?: string;
+    completed?: boolean;
     employee?: IEmployee;
     lineItem?: ILineItem;
 }
@@ -17,7 +18,10 @@ export class SeparationApplication implements ISeparationApplication {
         public dateOfLeaving?: Moment,
         public dateOfSubmission?: Moment,
         public reasonForLeaving?: string,
+        public completed?: boolean,
         public employee?: IEmployee,
         public lineItem?: ILineItem
-    ) {}
+    ) {
+        this.completed = false;
+    }
 }

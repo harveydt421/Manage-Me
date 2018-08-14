@@ -36,6 +36,18 @@ describe('SeparationApplication e2e test', () => {
         expect(separationApplicationUpdatePage.getDateOfSubmissionInput()).toContain('2001-01-01T02:30');
         separationApplicationUpdatePage.setReasonForLeavingInput('reasonForLeaving');
         expect(separationApplicationUpdatePage.getReasonForLeavingInput()).toMatch('reasonForLeaving');
+        separationApplicationUpdatePage
+            .getCompletedInput()
+            .isSelected()
+            .then(selected => {
+                if (selected) {
+                    separationApplicationUpdatePage.getCompletedInput().click();
+                    expect(separationApplicationUpdatePage.getCompletedInput().isSelected()).toBeFalsy();
+                } else {
+                    separationApplicationUpdatePage.getCompletedInput().click();
+                    expect(separationApplicationUpdatePage.getCompletedInput().isSelected()).toBeTruthy();
+                }
+            });
         separationApplicationUpdatePage.employeeSelectLastOption();
         separationApplicationUpdatePage.lineItemSelectLastOption();
         separationApplicationUpdatePage.save();

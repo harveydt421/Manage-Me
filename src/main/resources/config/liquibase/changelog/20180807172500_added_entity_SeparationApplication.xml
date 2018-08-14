@@ -32,6 +32,10 @@
             <column name="reason_for_leaving" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="completed" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="employee_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
