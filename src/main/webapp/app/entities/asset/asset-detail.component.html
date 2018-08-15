@@ -16,7 +16,7 @@
                 <dt><span>Employee</span></dt>
                 <dd>
                     <div *ngIf="asset.employee">
-                        <a [routerLink]="['/employee', asset.employee?.id, 'view']">{{asset.employee?.id}}</a>
+                        <a [routerLink]="['/employee', asset.employee?.id, 'view']">{{asset.employee.user?.firstName.concat(' ', asset.employee.user?.lastName)}}</a>
                     </div>
                 </dd>
             </dl>

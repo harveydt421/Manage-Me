@@ -28,17 +28,17 @@
                 <td>{{department.name}}</td>
                 <td>
                     <div *ngIf="department.head">
-                        <a [routerLink]="['../employee', department.head?.id, 'view' ]" >{{department.head?.id}}</a>
+                        <a [routerLink]="['../employee', department.head?.id, 'view' ]" >{{department.head.user?.firstName.concat(' ', department.head.user?.lastName)}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="department.representative">
-                        <a [routerLink]="['../employee', department.representative?.id, 'view' ]" >{{department.representative?.id}}</a>
+                        <a [routerLink]="['../employee', department.representative?.id, 'view' ]" >{{department.representative.user?.firstName.concat(' ', department.representative.user?.lastName)}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="department.location">
-                        <a [routerLink]="['../location', department.location?.id, 'view' ]" >{{department.location?.id}}</a>
+                        <a [routerLink]="['../location', department.location?.id, 'view' ]" >{{department.location?.city.concat(', ', department.location?.state)}}</a>
                     </div>
                 </td>
                 <td class="text-right">

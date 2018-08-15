@@ -34,7 +34,7 @@
                 <td>{{separationApplication.completed}}</td>
                 <td>
                     <div *ngIf="separationApplication.employee">
-                        <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee?.id}}</a>
+                        <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee.user?.firstName.concat(' ', separationApplication.employee.user?.lastName)}}</a>
                     </div>
                 </td>
                 <td>

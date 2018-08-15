@@ -28,7 +28,7 @@
                 <td>{{asset.value}}</td>
                 <td>
                     <div *ngIf="asset.employee">
-                        <a [routerLink]="['../employee', asset.employee?.id, 'view' ]" >{{asset.employee?.id}}</a>
+                        <a [routerLink]="['../employee', asset.employee?.id, 'view' ]" >{{asset.employee.user?.firstName.concat(' ', asset.employee.user?.lastName)}}</a>
                     </div>
                 </td>
                 <td class="text-right">
