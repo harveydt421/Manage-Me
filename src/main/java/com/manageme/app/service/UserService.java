@@ -149,8 +149,10 @@ public class UserService {
         return user;
     }
     
-    public User createUser(UserDTO userDTO, String phoneNumber) {
+    public User createUser(UserDTO userDTO, String phoneNumber, String password) {
         User user = createUser(userDTO);
+        String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
         // Create and save the Employee
         Employee employee = new Employee();
         employee.setUser(user);
