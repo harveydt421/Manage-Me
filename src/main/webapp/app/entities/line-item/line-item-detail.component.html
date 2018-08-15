@@ -12,7 +12,7 @@
                 <dt><span>Asset Owed</span></dt>
                 <dd>
                     <div *ngIf="lineItem.assetOwed">
-                        <a [routerLink]="['/asset', lineItem.assetOwed?.id, 'view']">{{lineItem.assetOwed?.id}}</a>
+                        <a [routerLink]="['/asset', lineItem.assetOwed?.id, 'view']">{{lineItem.assetOwed?.name}}</a>
                     </div>
                 </dd>
             </dl>

@@ -25,21 +25,21 @@
                     <label class="form-control-label" for="field_head">Head</label>
                     <select class="form-control" id="field_head" name="head" [(ngModel)]="department.head">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="employeeOption.id === department.head?.id ? department.head : employeeOption" *ngFor="let employeeOption of heads; trackBy: trackEmployeeById">{{employeeOption.id}}</option>
+                        <option [ngValue]="employeeOption.id === department.head?.id ? department.head : employeeOption" *ngFor="let employeeOption of heads; trackBy: trackEmployeeById">{{employeeOption.user.firstName.concat(' ', employeeOption.user.lastName)}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_representative">Representative</label>
                     <select class="form-control" id="field_representative" name="representative" [(ngModel)]="department.representative">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="employeeOption.id === department.representative?.id ? department.representative : employeeOption" *ngFor="let employeeOption of representatives; trackBy: trackEmployeeById">{{employeeOption.id}}</option>
+                        <option [ngValue]="employeeOption.id === department.representative?.id ? department.representative : employeeOption" *ngFor="let employeeOption of representatives; trackBy: trackEmployeeById">{{employeeOption.user.firstName.concat(' ', employeeOption.user.lastName)}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_location">Location</label>
                     <select class="form-control" id="field_location" name="location" [(ngModel)]="department.location">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="locationOption.id === department.location?.id ? department.location : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.id}}</option>
+                        <option [ngValue]="locationOption.id === department.location?.id ? department.location : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.city.concat(', ', locationOption.state)}}</option>
                     </select>
                 </div>
             </div>
