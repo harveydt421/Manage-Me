@@ -43,7 +43,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'line-item/'+ lineItem.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
