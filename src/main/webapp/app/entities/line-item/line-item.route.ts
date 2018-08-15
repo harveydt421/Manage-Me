@@ -30,7 +30,7 @@ export const lineItemRoute: Routes = [
         path: 'line-item',
         component: LineItemComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN'],
             pageTitle: 'LineItems'
         },
         canActivate: [UserRouteAccessService]
@@ -54,7 +54,7 @@ export const lineItemRoute: Routes = [
             lineItem: LineItemResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN'],
             pageTitle: 'LineItems'
         },
         canActivate: [UserRouteAccessService]
@@ -66,7 +66,7 @@ export const lineItemRoute: Routes = [
             lineItem: LineItemResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN'],
             pageTitle: 'LineItems'
         },
         canActivate: [UserRouteAccessService]
@@ -81,7 +81,7 @@ export const lineItemPopupRoute: Routes = [
             lineItem: LineItemResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN'],
             pageTitle: 'LineItems'
         },
         canActivate: [UserRouteAccessService],
