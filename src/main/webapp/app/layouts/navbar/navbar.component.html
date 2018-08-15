@@ -29,52 +29,43 @@
                     </span>
                 </a>
                
-               <ul *jhiHasAnyAuthority="'ROLE_USER'" class="dropdown-menu" ngbDropdownMenu>
-               <li>
-                        <a class="dropdown-item" routerLink="separation-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
-                            <span>Separation Application</span>
-                        </a>
-               </li>
-               </ul>
-
-                <ul *jhiHasAnyAuthority="'ROLE_ADMIN'" class="dropdown-menu" ngbDropdownMenu>
-                    <li>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="employee" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Employee</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="department" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Department</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="location" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Location</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN']">
                         <a class="dropdown-item" routerLink="asset" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Asset</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="separation-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Separation Application</span>
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="['ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_ADMIN']">
                         <a class="dropdown-item" routerLink="line-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Line Item</span>
                         </a>
-                    </li>
+                    </li>                    
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
