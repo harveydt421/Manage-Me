@@ -12,6 +12,8 @@ export class UserMgmtUpdateComponent implements OnInit {
     languages: any[];
     authorities: any[];
     isSaving: boolean;
+    confirmPassword: string;
+    doNotMatch: string;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
 
@@ -31,12 +33,17 @@ export class UserMgmtUpdateComponent implements OnInit {
     }
 
     save() {
-        this.isSaving = true;
-        if (this.user.id !== null) {
-            this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+        if (this.user.password !== this.confirmPassword) {
+            this.doNotMatch = 'ERROR';
         } else {
-            this.user.langKey = 'en';
-            this.userService.create(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+            this.doNotMatch = null;
+            this.isSaving = true;
+            if (this.user.id !== null) {
+                this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+            } else {
+                this.user.langKey = 'en';
+                this.userService.create(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+            }
         }
     }
 
