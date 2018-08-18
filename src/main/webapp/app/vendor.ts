@@ -4,7 +4,9 @@ import '../content/scss/vendor.scss';
 
 // Imports all fontawesome core and solid icons
 
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { NgModule } from '@angular/core';
+
 import {
     faUser,
     faSort,
@@ -40,6 +42,8 @@ import {
     faHome
 } from '@fortawesome/free-solid-svg-icons';
 
+import { faBell as farBell, faFile as farFile, faUser as farUser } from '@fortawesome/free-regular-svg-icons';
+
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faUser);
 library.add(faSort);
@@ -73,5 +77,9 @@ library.add(faCalendarAlt);
 library.add(faSearch);
 library.add(faTrashAlt);
 library.add(faAsterisk);
+library.add(farBell);
+library.add(farFile);
+library.add(farUser);
+dom.watch();
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

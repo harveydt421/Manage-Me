@@ -17,7 +17,7 @@ import { ManageMeHomeModule } from './home/home.module';
 import { ManageMeAccountModule } from './account/account.module';
 import { ManageMeEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent, SidebarComponent } from './layouts';
 
 @NgModule({
     imports: [
@@ -31,7 +31,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         ManageMeEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, SidebarComponent],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

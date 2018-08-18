@@ -7,11 +7,11 @@ import { Principal, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
 
 @Component({
-    selector: 'jhi-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['navbar.css']
+    selector: 'jhi-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['sidebar.css']
 })
-export class NavbarComponent implements OnInit {
+export class SidebarComponent implements OnInit {
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
