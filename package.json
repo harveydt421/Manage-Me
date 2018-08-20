@@ -78,7 +78,6 @@
     "proxy-middleware": "0.15.0",
     "raw-loader": "0.5.1",
     "rimraf": "2.6.1",
-    "sass-loader": "7.0.1",
     "simple-progress-webpack-plugin": "1.1.2",
     "style-loader": "0.20.3",
     "tapable": "1.0.0",
