@@ -61,11 +61,3 @@ body {
     font-size: 0.75rem;
     text-transform: uppercase;
 }
-
-/*
- * Content
- */
-
-[role='main'] {
-    padding-top: 48px; /* Space for fixed navbar */
-}
