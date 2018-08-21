@@ -1,25 +1,36 @@
-<div>
-    <h2 id="page-heading">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" id="page-heading">
         <span>Departments</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-department" [routerLink]="['/department/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button id="jh-create-entity" class="btn btn-sm btn-outline-secondary  jh-create-entity create-department"
+                    [routerLink]="['/department/new']">
+                <i class="fa fa-user-plus"></i>
+                <span>
             Create new Department
             </span>
-        </button>
-    </h2>
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <i class="far fa-file"></i>
+                Export CSV
+            </button>
+        </div>
+    </div>
+</div>
+<div>
     <jhi-alert></jhi-alert>
     <br/>
     <div class="table-responsive" *ngIf="departments">
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Name</span></th>
-            <th><span>Head</span></th>
-            <th><span>Representative</span></th>
-            <th><span>Location</span></th>
-            <th></th>
+                <th><span>ID</span></th>
+                <th><span>Name</span></th>
+                <th><span>Head</span></th>
+                <th><span>Representative</span></th>
+                <th><span>Location</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -28,17 +39,17 @@
                 <td>{{department.name}}</td>
                 <td>
                     <div *ngIf="department.head">
-                        <a [routerLink]="['../employee', department.head?.id, 'view' ]" >{{department.head?.id}}</a>
+                        <a [routerLink]="['../employee', department.head?.id, 'view' ]">{{department.head?.id}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="department.representative">
-                        <a [routerLink]="['../employee', department.representative?.id, 'view' ]" >{{department.representative?.id}}</a>
+                        <a [routerLink]="['../employee', department.representative?.id, 'view' ]">{{department.representative?.id}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="department.location">
-                        <a [routerLink]="['../location', department.location?.id, 'view' ]" >{{department.location?.id}}</a>
+                        <a [routerLink]="['../location', department.location?.id, 'view' ]">{{department.location?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
