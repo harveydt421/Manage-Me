@@ -42,7 +42,8 @@ import {
     faHome,
     faUsers,
     faLaptop,
-    faGlobeAmericas
+    faGlobeAmericas,
+    faCheck
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faBell as farBell, faFile as farFile, faUser as farUser, faBuilding as farBuilding } from '@fortawesome/free-regular-svg-icons';
@@ -87,7 +88,9 @@ library.add(faUsers);
 library.add(faLaptop);
 library.add(farBuilding);
 library.add(faGlobeAmericas);
+library.add(faCheck);
 
 dom.watch();
+
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

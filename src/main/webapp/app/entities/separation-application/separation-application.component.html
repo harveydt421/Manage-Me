@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Separation Applications</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']" *ngIf="!isPending()">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Separation Application
@@ -12,7 +12,7 @@
     <br/>
     <div class="table-responsive" *ngIf="separationApplications">
         <table class="table table-striped">
-        <table class="table table-striped"">
+        <table class="table table-striped" *ngIf="isPending()">
             <thead>
             <tr>
             <th><span>ID</span></th>
@@ -34,7 +34,7 @@
                 <td>{{separationApplication.completed}}</td>
                 <td>
                     <div *ngIf="separationApplication.employee">
-                        <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee?.id}}</a>
+                        <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee.user?.firstName.concat(' ', separationApplication.employee.user?.lastName)}}</a>
                     </div>
                 </td>
                 <td>
@@ -42,7 +42,7 @@
                         <a [routerLink]="['../line-item', separationApplication.lineItem?.id, 'view' ]" >{{separationApplication.lineItem?.id}}</a>
                     </div>
                 </td>
-                <td class="text-right" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/separation-application', separationApplication.id, 'view' ]"
@@ -50,13 +50,13 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE']" type="submit"
                                 [routerLink]="['/separation-application', separationApplication.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'separation-application/'+ separationApplication.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
