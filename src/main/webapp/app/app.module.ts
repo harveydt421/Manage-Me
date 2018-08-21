@@ -13,7 +13,7 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
 import { ManageMeSharedModule } from 'app/shared';
 import { ManageMeCoreModule } from 'app/core';
 import { ManageMeAppRoutingModule } from './app-routing.module';
-import { ManageMeHomeModule } from './home/home.module';
+import { ManageMeHomeModule } from 'app/home';
 import { ManageMeAccountModule } from './account/account.module';
 import { ManageMeEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here

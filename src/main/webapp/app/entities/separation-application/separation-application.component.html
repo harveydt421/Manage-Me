@@ -1,13 +1,18 @@
-<div>
-    <h2 id="page-heading">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" id="page-heading">
         <span>Separation Applications</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']" *ngIf="!isPending()">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create new Separation Application
-            </span>
+    </h1>
+    <div class="btn-group mr-2">
+        <button id="jh-create-entity" class="btn btn-primary btn-sm btn-outline-secondary jh-create-entity create-separation-application" [routerLink]="['/separation-application/new']">
+            <i class="fas fa-plus"></i>
+            <span>Create new Separation Application</span>
         </button>
-    </h2>
+        <button class="btn btn-sm btn-outline-secondary" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <i class="far fa-file"></i>
+            <span>Export CSV</span>
+        </button>
+    </div>
+</div>
     <jhi-alert></jhi-alert>
     <br/>
     <div class="table-responsive" *ngIf="separationApplications">
@@ -70,4 +75,3 @@
             </tbody>
         </table>
     </div>
-</div>
