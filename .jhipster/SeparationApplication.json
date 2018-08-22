@@ -34,7 +34,7 @@
             "otherEntityRelationshipName": "separationApplication"
         },
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "one-to-many",
             "relationshipName": "lineItem",
             "otherEntityName": "lineItem",
             "otherEntityField": "id"
