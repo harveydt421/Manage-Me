@@ -24,20 +24,8 @@
                 <dt><span>Employee</span></dt>
                 <dd>
                     <div *ngIf="separationApplication.employee">
-                        <a [routerLink]="['/employee', separationApplication.employee?.id, 'view']">{{separationApplication.employee.user?.firstName.concat(' ', separationApplication.employee.user?.lastName)}}</a>
+                        <a [routerLink]="['/employee', separationApplication.employee?.id, 'view']">{{separationApplication.employee?.id}}</a>
                     </div>
-                </dd>
-                <dt><span>Line Item</span></dt>
-                <dd>
-                    
-                    
-                    
-                    
-                    
-                    <div *ngIf="separationApplication.lineItem">
-                        <a [routerLink]="['/line-item', separationApplication.lineItem?.id, 'view']">{{separationApplication.lineItem?.id}}</a>
-                    </div>
-                    
                 </dd>
             </dl>
 

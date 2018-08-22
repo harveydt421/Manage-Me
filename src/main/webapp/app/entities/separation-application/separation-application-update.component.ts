@@ -10,8 +10,6 @@ import { ISeparationApplication } from 'app/shared/model/separation-application.
 import { SeparationApplicationService } from './separation-application.service';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from 'app/entities/employee';
-import { ILineItem } from 'app/shared/model/line-item.model';
-import { LineItemService } from 'app/entities/line-item';
 
 @Component({
     selector: 'jhi-separation-application-update',
@@ -22,8 +20,6 @@ export class SeparationApplicationUpdateComponent implements OnInit {
     isSaving: boolean;
 
     employees: IEmployee[];
-
-    lineitems: ILineItem[];
     dateOfLeaving: string;
     dateOfSubmission: string;
 
@@ -31,7 +27,6 @@ export class SeparationApplicationUpdateComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private separationApplicationService: SeparationApplicationService,
         private employeeService: EmployeeService,
-        private lineItemService: LineItemService,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -52,12 +47,6 @@ export class SeparationApplicationUpdateComponent implements OnInit {
                         (subRes: HttpErrorResponse) => this.onError(subRes.message)
                     );
                 }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.lineItemService.query().subscribe(
-            (res: HttpResponse<ILineItem[]>) => {
-                this.lineitems = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -99,10 +88,6 @@ export class SeparationApplicationUpdateComponent implements OnInit {
     }
 
     trackEmployeeById(index: number, item: IEmployee) {
-        return item.id;
-    }
-
-    trackLineItemById(index: number, item: ILineItem) {
         return item.id;
     }
     get separationApplication() {

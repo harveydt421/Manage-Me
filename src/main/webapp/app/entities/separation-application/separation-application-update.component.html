@@ -55,14 +55,13 @@
                     <label class="form-control-label" for="field_employee">Employee</label>
                     <select class="form-control" id="field_employee" name="employee" [(ngModel)]="separationApplication.employee">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="employeeOption.id === separationApplication.employee?.id ? separationApplication.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.user.firstName.concat(' ', employeeOption.user.lastName)}}</option>
+                        <option [ngValue]="employeeOption.id === separationApplication.employee?.id ? separationApplication.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.id}}</option>
                     </select>
                 </div>
                 <div *jhiHasAnyAuthority="'ROLE_FUNCTIONAL_REPRESENTATIVE'" class="form-group">
                     <label class="form-control-label" for="field_lineItem">Line Item</label>
                     <select class="form-control" id="field_lineItem" name="lineItem" [(ngModel)]="separationApplication.lineItem" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="lineItemOption.id === separationApplication.lineItem?.id ? separationApplication.lineItem : lineItemOption" *ngFor="let lineItemOption of lineitems; trackBy: trackLineItemById">{{lineItemOption.id}}</option>
                     </select>
                 </div>
             </div>

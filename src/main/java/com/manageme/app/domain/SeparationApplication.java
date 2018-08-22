@@ -1,6 +1,6 @@
 package com.manageme.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -44,9 +46,9 @@ public class SeparationApplication implements Serializable {
     @JoinColumn(unique = true)
     private Employee employee;
 
-    @ManyToOne
-    @JsonIgnoreProperties("")
-    private LineItem lineItem;
+    @OneToMany(mappedBy = "separationApplication")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<LineItem> lineItems = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -122,17 +124,29 @@ public class SeparationApplication implements Serializable {
         this.employee = employee;
     }
 
-    public LineItem getLineItem() {
-        return lineItem;
+    public Set<LineItem> getLineItems() {
+        return lineItems;
     }
 
-    public SeparationApplication lineItem(LineItem lineItem) {
-        this.lineItem = lineItem;
+    public SeparationApplication lineItems(Set<LineItem> lineItems) {
+        this.lineItems = lineItems;
         return this;
     }
 
-    public void setLineItem(LineItem lineItem) {
-        this.lineItem = lineItem;
+    public SeparationApplication addLineItem(LineItem lineItem) {
+        this.lineItems.add(lineItem);
+        lineItem.setSeparationApplication(this);
+        return this;
+    }
+
+    public SeparationApplication removeLineItem(LineItem lineItem) {
+        this.lineItems.remove(lineItem);
+        lineItem.setSeparationApplication(null);
+        return this;
+    }
+
+    public void setLineItems(Set<LineItem> lineItems) {
+        this.lineItems = lineItems;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
