@@ -1,5 +1,6 @@
 package com.manageme.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +30,10 @@ public class LineItem implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private Asset assetOwed;
+
+    @ManyToOne
+    @JsonIgnoreProperties("")
+    private SeparationApplication separationApplication;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -63,6 +68,19 @@ public class LineItem implements Serializable {
 
     public void setAssetOwed(Asset asset) {
         this.assetOwed = asset;
+    }
+
+    public SeparationApplication getSeparationApplication() {
+        return separationApplication;
+    }
+
+    public LineItem separationApplication(SeparationApplication separationApplication) {
+        this.separationApplication = separationApplication;
+        return this;
+    }
+
+    public void setSeparationApplication(SeparationApplication separationApplication) {
+        this.separationApplication = separationApplication;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

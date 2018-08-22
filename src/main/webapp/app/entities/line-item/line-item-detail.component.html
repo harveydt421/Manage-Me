@@ -15,6 +15,12 @@
                         <a [routerLink]="['/asset', lineItem.assetOwed?.id, 'view']">{{lineItem.assetOwed?.name}}</a>
                     </div>
                 </dd>
+                <dt><span>Separation Application</span></dt>
+                <dd>
+                    <div *ngIf="lineItem.separationApplication">
+                        <a [routerLink]="['/separation-application', lineItem.separationApplication?.id, 'view']">{{lineItem.separationApplication?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

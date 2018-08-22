@@ -14,6 +14,12 @@
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "lineItem"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "separationApplication",
+            "otherEntityName": "separationApplication",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20180807172501",

@@ -33,6 +33,7 @@ describe('LineItem e2e test', () => {
         lineItemUpdatePage.setFeedbackInput('feedback');
         expect(lineItemUpdatePage.getFeedbackInput()).toMatch('feedback');
         lineItemUpdatePage.assetOwedSelectLastOption();
+        lineItemUpdatePage.separationApplicationSelectLastOption();
         lineItemUpdatePage.save();
         expect(lineItemUpdatePage.getSaveButton().isPresent()).toBeFalsy();
     });

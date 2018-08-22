@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="asset"/>
 
+        <addForeignKeyConstraint baseColumnNames="separation_application_id"
+                                 baseTableName="line_item"
+                                 constraintName="fk_line_item_separation_application_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="separation_application"/>
+
     </changeSet>
 </databaseChangeLog>
