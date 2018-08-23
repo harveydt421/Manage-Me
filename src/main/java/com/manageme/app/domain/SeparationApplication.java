@@ -50,7 +50,7 @@ public class SeparationApplication implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LineItem> lineItems = new HashSet<>();
 
-    @OneToMany(mappedBy = "separationApplication")
+    @OneToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employee> functionalRepresentatives = new HashSet<>();
 
@@ -164,13 +164,13 @@ public class SeparationApplication implements Serializable {
 
     public SeparationApplication addFunctionalRepresentative(Employee employee) {
         this.functionalRepresentatives.add(employee);
-        employee.setSeparationApplication(this);
+        //employee.setSeparationApplication(this);
         return this;
     }
 
     public SeparationApplication removeFunctionalRepresentative(Employee employee) {
         this.functionalRepresentatives.remove(employee);
-        employee.setSeparationApplication(null);
+        //employee.setSeparationApplication(null);
         return this;
     }
 
