@@ -40,6 +40,7 @@ import {
     faAsterisk,
     faTasks,
     faHome,
+    faMinusCircle,
     faUsers,
     faLaptop,
     faGlobeAmericas,
@@ -81,6 +82,7 @@ library.add(faCalendarAlt);
 library.add(faSearch);
 library.add(faTrashAlt);
 library.add(faAsterisk);
+library.add(faMinusCircle);
 library.add(farBell);
 library.add(farFile);
 library.add(farUser);
@@ -91,6 +93,5 @@ library.add(faGlobeAmericas);
 library.add(faCheck);
 
 dom.watch();
-
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
