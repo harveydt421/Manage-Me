@@ -44,7 +44,7 @@ public class LineItemResource {
      */
     @PostMapping("/line-items")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
     public ResponseEntity<LineItem> createLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
         log.debug("REST request to save LineItem : {}", lineItem);
         if (lineItem.getId() != null) {
@@ -67,7 +67,7 @@ public class LineItemResource {
      */
     @PutMapping("/line-items")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
     public ResponseEntity<LineItem> updateLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
         log.debug("REST request to update LineItem : {}", lineItem);
         if (lineItem.getId() == null) {
@@ -113,7 +113,7 @@ public class LineItemResource {
      */
     @DeleteMapping("/line-items/{id}")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
     public ResponseEntity<Void> deleteLineItem(@PathVariable Long id) {
         log.debug("REST request to delete LineItem : {}", id);
         lineItemService.delete(id);

@@ -25,6 +25,12 @@
                     Assets
                 </a>
             </li>
+            <li *jhiHasAnyAuthority="'ROLE_FUNCTIONAL_REPRESENTATIVE'">
+            	<a class="nav-link" routerLink="line-item" routerLinkActive="active">
+                    <i class="fas fa-laptop"></i>
+                    Line Item
+                </a>
+            </li>
         </ul>
 
         <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
