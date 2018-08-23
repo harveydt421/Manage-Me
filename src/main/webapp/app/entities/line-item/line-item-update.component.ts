@@ -8,6 +8,8 @@ import { ILineItem } from 'app/shared/model/line-item.model';
 import { LineItemService } from './line-item.service';
 import { IAsset } from 'app/shared/model/asset.model';
 import { AssetService } from 'app/entities/asset';
+import { ISeparationApplication } from 'app/shared/model/separation-application.model';
+import { SeparationApplicationService } from 'app/entities/separation-application';
 
 @Component({
     selector: 'jhi-line-item-update',
@@ -19,10 +21,13 @@ export class LineItemUpdateComponent implements OnInit {
 
     assetoweds: IAsset[];
 
+    separationapplications: ISeparationApplication[];
+
     constructor(
         private jhiAlertService: JhiAlertService,
         private lineItemService: LineItemService,
         private assetService: AssetService,
+        private separationApplicationService: SeparationApplicationService,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -43,6 +48,12 @@ export class LineItemUpdateComponent implements OnInit {
                         (subRes: HttpErrorResponse) => this.onError(subRes.message)
                     );
                 }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.separationApplicationService.query().subscribe(
+            (res: HttpResponse<ISeparationApplication[]>) => {
+                this.separationapplications = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -79,6 +90,10 @@ export class LineItemUpdateComponent implements OnInit {
     }
 
     trackAssetById(index: number, item: IAsset) {
+        return item.id;
+    }
+
+    trackSeparationApplicationById(index: number, item: ISeparationApplication) {
         return item.id;
     }
     get lineItem() {

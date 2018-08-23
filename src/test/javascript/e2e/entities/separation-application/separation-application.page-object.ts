@@ -22,7 +22,6 @@ export class SeparationApplicationUpdatePage {
     reasonForLeavingInput = element(by.id('field_reasonForLeaving'));
     completedInput = element(by.id('field_completed'));
     employeeSelect = element(by.id('field_employee'));
-    lineItemSelect = element(by.id('field_lineItem'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -72,25 +71,6 @@ export class SeparationApplicationUpdatePage {
 
     getEmployeeSelectedOption() {
         return this.employeeSelect.element(by.css('option:checked')).getText();
-    }
-
-    lineItemSelectLastOption(): promise.Promise<void> {
-        return this.lineItemSelect
-            .all(by.tagName('option'))
-            .last()
-            .click();
-    }
-
-    lineItemSelectOption(option): promise.Promise<void> {
-        return this.lineItemSelect.sendKeys(option);
-    }
-
-    getLineItemSelect(): ElementFinder {
-        return this.lineItemSelect;
-    }
-
-    getLineItemSelectedOption() {
-        return this.lineItemSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {

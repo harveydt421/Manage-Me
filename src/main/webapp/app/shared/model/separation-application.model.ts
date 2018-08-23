@@ -9,7 +9,7 @@ export interface ISeparationApplication {
     reasonForLeaving?: string;
     completed?: boolean;
     employee?: IEmployee;
-    lineItem?: ILineItem;
+    lineItems?: ILineItem[];
 }
 
 export class SeparationApplication implements ISeparationApplication {
@@ -20,7 +20,7 @@ export class SeparationApplication implements ISeparationApplication {
         public reasonForLeaving?: string,
         public completed?: boolean,
         public employee?: IEmployee,
-        public lineItem?: ILineItem
+        public lineItems?: ILineItem[]
     ) {
         this.completed = false;
     }

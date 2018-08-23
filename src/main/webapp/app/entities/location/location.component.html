@@ -1,26 +1,38 @@
-<div>
-    <h2 id="page-heading">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2" id="page-heading">
         <span>Locations</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-location" [routerLink]="['/location/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button id="jh-create-entity" class="btn btn-sm btn-outline-secondary  jh-create-entity create-location"
+                    [routerLink]="['/location/new']">
+                <fa-icon [icon]="'plus'"></fa-icon>
+                <span>
             Create new Location
             </span>
-        </button>
-    </h2>
-    <jhi-alert></jhi-alert>
-    <br/>
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <i class="far fa-file"></i>
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+</div>
+<jhi-alert></jhi-alert>
+<br/>
+<div>
     <div class="table-responsive" *ngIf="locations">
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Street Address</span></th>
-            <th><span>Postal Code</span></th>
-            <th><span>City</span></th>
-            <th><span>State</span></th>
-            <th><span>Country</span></th>
-            <th></th>
+                <th><span>ID</span></th>
+                <th><span>Street Address</span></th>
+                <th><span>Postal Code</span></th>
+                <th><span>City</span></th>
+                <th><span>State</span></th>
+                <th><span>Country</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>

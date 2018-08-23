@@ -19,6 +19,7 @@ export class LineItemUpdatePage {
     cancelButton = element(by.id('cancel-save'));
     feedbackInput = element(by.id('field_feedback'));
     assetOwedSelect = element(by.id('field_assetOwed'));
+    separationApplicationSelect = element(by.id('field_separationApplication'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -49,6 +50,25 @@ export class LineItemUpdatePage {
 
     getAssetOwedSelectedOption() {
         return this.assetOwedSelect.element(by.css('option:checked')).getText();
+    }
+
+    separationApplicationSelectLastOption(): promise.Promise<void> {
+        return this.separationApplicationSelect
+            .all(by.tagName('option'))
+            .last()
+            .click();
+    }
+
+    separationApplicationSelectOption(option): promise.Promise<void> {
+        return this.separationApplicationSelect.sendKeys(option);
+    }
+
+    getSeparationApplicationSelect(): ElementFinder {
+        return this.separationApplicationSelect;
+    }
+
+    getSeparationApplicationSelectedOption() {
+        return this.separationApplicationSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {
