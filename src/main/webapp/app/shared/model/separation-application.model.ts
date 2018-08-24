@@ -10,7 +10,6 @@ export interface ISeparationApplication {
     completed?: boolean;
     employee?: IEmployee;
     lineItems?: ILineItem[];
-    functionalRepresentatives?: IEmployee[];
 }
 
 export class SeparationApplication implements ISeparationApplication {
@@ -21,8 +20,7 @@ export class SeparationApplication implements ISeparationApplication {
         public reasonForLeaving?: string,
         public completed?: boolean,
         public employee?: IEmployee,
-        public lineItems?: ILineItem[],
-        public functionalRepresentatives?: IEmployee[]
+        public lineItems?: ILineItem[]
     ) {
         this.completed = false;
     }

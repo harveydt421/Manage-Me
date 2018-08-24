@@ -50,10 +50,6 @@ public class SeparationApplication implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LineItem> lineItems = new HashSet<>();
 
-    @OneToMany(mappedBy = "separationApplication")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Employee> functionalRepresentatives = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -151,31 +147,6 @@ public class SeparationApplication implements Serializable {
 
     public void setLineItems(Set<LineItem> lineItems) {
         this.lineItems = lineItems;
-    }
-
-    public Set<Employee> getFunctionalRepresentatives() {
-        return functionalRepresentatives;
-    }
-
-    public SeparationApplication functionalRepresentatives(Set<Employee> employees) {
-        this.functionalRepresentatives = employees;
-        return this;
-    }
-
-    public SeparationApplication addFunctionalRepresentative(Employee employee) {
-        this.functionalRepresentatives.add(employee);
-        employee.setSeparationApplication(this);
-        return this;
-    }
-
-    public SeparationApplication removeFunctionalRepresentative(Employee employee) {
-        this.functionalRepresentatives.remove(employee);
-        employee.setSeparationApplication(null);
-        return this;
-    }
-
-    public void setFunctionalRepresentatives(Set<Employee> employees) {
-        this.functionalRepresentatives = employees;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
