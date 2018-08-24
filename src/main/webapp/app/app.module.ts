@@ -16,6 +16,8 @@ import { ManageMeAppRoutingModule } from './app-routing.module';
 import { ManageMeHomeModule } from 'app/home';
 import { ManageMeAccountModule } from './account/account.module';
 import { ManageMeEntityModule } from './entities/entity.module';
+import { ManageMeDashboardModule } from 'app/dashboard/dashboard.module';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent, SidebarComponent } from './layouts';
 
@@ -28,7 +30,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         ManageMeCoreModule,
         ManageMeHomeModule,
         ManageMeAccountModule,
-        ManageMeEntityModule
+        ManageMeEntityModule,
+        ManageMeDashboardModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, SidebarComponent],
