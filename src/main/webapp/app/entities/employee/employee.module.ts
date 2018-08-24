@@ -1,5 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { ManageMeSharedModule } from 'app/shared';
 import { ManageMeAdminModule } from 'app/admin/admin.module';
 import {
