@@ -38,12 +38,6 @@
             "relationshipName": "lineItem",
             "otherEntityName": "lineItem",
             "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "functionalRepresentative",
-            "otherEntityName": "employee",
-            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20180807172500",
