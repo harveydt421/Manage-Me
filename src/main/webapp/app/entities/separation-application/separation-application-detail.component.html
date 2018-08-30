@@ -24,7 +24,7 @@
                 <dt><span>Employee</span></dt>
                 <dd>
                     <div *ngIf="separationApplication.employee">
-                        <a [routerLink]="['/employee', separationApplication.employee?.id, 'view']">{{separationApplication.employee?.id}}</a>
+                        <a [routerLink]="['/employee', separationApplication.employee?.id, 'view']">{{separationApplication.employee?.user.firstName.concat(' ', separationApplication.employee?.user.lastName)}}</a>
                     </div>
                 </dd>
             </dl>
