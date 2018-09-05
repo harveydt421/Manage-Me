@@ -11,6 +11,7 @@ import { SeparationApplicationService } from './separation-application.service';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from 'app/entities/employee';
 import { ILineItem } from 'app/shared/model/line-item.model';
+import { IUser, UserService } from 'app/core';
 
 @Component({
     selector: 'jhi-separation-application-update',
@@ -19,7 +20,7 @@ import { ILineItem } from 'app/shared/model/line-item.model';
 export class SeparationApplicationUpdateComponent implements OnInit {
     private _separationApplication: ISeparationApplication;
     isSaving: boolean;
-
+    functionalRepresentatives: IEmployee[] = [];
     employees: IEmployee[];
     dateOfLeaving: string;
     dateOfSubmission: string;
@@ -31,7 +32,8 @@ export class SeparationApplicationUpdateComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private separationApplicationService: SeparationApplicationService,
         private employeeService: EmployeeService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private userService: UserService
     ) {}
 
     ngOnInit() {
@@ -39,6 +41,16 @@ export class SeparationApplicationUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ separationApplication }) => {
             this.separationApplication = separationApplication;
         });
+        this.employeeService.query().subscribe((res: HttpResponse<IEmployee[]>) => {
+            res.body.forEach((employee: IEmployee) => {
+                this.userService.find(employee.user.login).subscribe((subRes: HttpResponse<IUser>) => {
+                    if (subRes.body.authorities.includes('ROLE_FUNCTIONAL_REPRESENTATIVE')) {
+                        this.functionalRepresentatives.push(employee);
+                    }
+                });
+            });
+        });
+
         this.employeeService.query({ filter: 'separationapplication-is-null' }).subscribe(
             (res: HttpResponse<IEmployee[]>) => {
                 if (!this.separationApplication.employee || !this.separationApplication.employee.id) {

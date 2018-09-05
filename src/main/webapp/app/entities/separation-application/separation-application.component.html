@@ -53,7 +53,7 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
-                        <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE']" type="submit"
+                        <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE', 'ROLE_HUMAN_RESOURCES']" type="submit"
                                 [routerLink]="['/separation-application', separationApplication.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>

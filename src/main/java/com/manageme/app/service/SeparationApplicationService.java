@@ -49,7 +49,8 @@ public class SeparationApplicationService {
     public List<SeparationApplication> findAll() {
         log.debug("Request to get all SeparationApplications");
         List<SeparationApplication> result;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {	
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+            SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.HUMAN_RESOURCES)) {
         	result = separationApplicationRepository.findAll();
         } else {
         	 result = separationApplicationRepository.findAllByEmployeeUserLogin(SecurityUtils.getCurrentUserLogin().get());

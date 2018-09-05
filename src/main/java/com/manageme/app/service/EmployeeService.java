@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -48,13 +49,15 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<Employee> findAll() {
         log.debug("Request to get all Employees");
-        List<Employee> result;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-        	result = employeeRepository.findAll();        	
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+            SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.HUMAN_RESOURCES)){
+            return employeeRepository.findAll();
         } else {
-        	result = employeeRepository.findAllByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+            if (SecurityUtils.getCurrentUserLogin().isPresent()) {
+                return employeeRepository.findAllByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+            }
         }
-        return result;
+        return Collections.emptyList();
     }
 
 
