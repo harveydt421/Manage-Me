@@ -1,8 +1,9 @@
 package com.manageme.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -32,7 +33,7 @@ public class LineItem implements Serializable {
     private Asset assetOwed;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnore
     private SeparationApplication separationApplication;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

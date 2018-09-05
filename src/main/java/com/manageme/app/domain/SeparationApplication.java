@@ -46,7 +46,7 @@ public class SeparationApplication implements Serializable {
     @JoinColumn(unique = true)
     private Employee employee;
 
-    @OneToMany(mappedBy = "separationApplication")
+    @OneToMany(mappedBy = "separationApplication", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LineItem> lineItems = new HashSet<>();
 

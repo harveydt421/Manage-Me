@@ -21,6 +21,12 @@
                 <dd>
                     <span>{{separationApplication.completed}}</span>
                 </dd>
+                <dt><span>Line Item(s)</span></dt>
+                <dd>
+                    <div *ngFor="let lineItem of separationApplication.lineItems">
+                        <a [routerLink]="['/line-item', lineItem?.id, 'view']">{{lineItem?.assetOwed.name}}</a>
+                    </div>
+                </dd>
                 <dt><span>Employee</span></dt>
                 <dd>
                     <div *ngIf="separationApplication.employee">
