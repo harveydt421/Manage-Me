@@ -68,10 +68,11 @@ public class SeparationApplicationService {
     public Optional<SeparationApplication> findOne(Long id) {
         log.debug("Request to get SeparationApplication : {}", id);
         Optional<SeparationApplication> result;
-        if  (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FUNCTIONAL_REPRESENTATIVE)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+        	SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FUNCTIONAL_REPRESENTATIVE)) {
         	result = separationApplicationRepository.findById(id);        	
         } else {
-        	result = separationApplicationRepository.findOneByIdAndEmployeeUserLogin(SecurityUtils.getCurrentUserLogin().get(), id);
+        	result = separationApplicationRepository.findOneByIdAndEmployeeUserLogin(id, SecurityUtils.getCurrentUserLogin().get());
         }
         return result;
     }

@@ -18,6 +18,6 @@ public interface SeparationApplicationRepository extends JpaRepository<Separatio
 
 	List<SeparationApplication> findAllByEmployeeUserLogin(String login);
 
-	Optional<SeparationApplication> findOneByIdAndEmployeeUserLogin(String login, Long id);
+	Optional<SeparationApplication> findOneByIdAndEmployeeUserLogin(Long id, String login);
 
 }
