@@ -8,7 +8,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
             <th><span>Employee</span></th>
             <th><span>Date of Leaving</span></th>
             <th><span>Submit Date</span></th>
@@ -17,19 +16,10 @@
             </tr>
             </thead>
             <tbody>
-            	
-            	 <tr
-                *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
 
-                <td *ngIf="separationApplication.completedDate == null"><a
-                    [routerLink]="['/separation-application', separationApplication.id, 'view' ]">{{separationApplication.id}}</a>
-                </td>
+            	<tr *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
                 <td *ngIf="separationApplication.completedDate == null">
-                    <div *ngIf="separationApplication.employee">
-                        <a
-                            [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]">{{separationApplication.employee.user.firstName.concat('
-                            ', separationApplication.employee.user.lastName)}}</a>
-                    </div>
+                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName)}}</a>
                 </td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving | date:'mediumDate'}}</td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfSubmission | date:'mediumDate'}}</td>
@@ -37,7 +27,7 @@
                         <a [routerLink]="['../line-item', lineItem?.id, 'view' ]" >{{lineItem?.assetOwed.name}}</a>
                 </div>
                 <td class="text-right" *ngIf="separationApplication.completedDate == null">
-                    
+
                 </td>
 
                 <td class="text-right"
@@ -61,7 +51,7 @@
                 <th><span>Submit Date</span></th>
                 <th><span>Completed Date</span></th>
                 <th><span>Reason For Leaving</span></th>
-                           
+
                 <th></th>
             </tr>
             </thead>
@@ -72,13 +62,9 @@
                 *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
 
                 <td *ngIf="separationApplication.completedDate != null">
-                    <div *ngIf="separationApplication.employee">
-                        <a
-                            [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]">{{separationApplication.employee.user.firstName.concat('
-                            ', separationApplication.employee.user.lastName)}}</a>
-                    </div>
+                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName)}}</a>
                 </td>
-                
+
                 <td *ngIf="separationApplication.completedDate != null"><a
                     [routerLink]="['/separation-application', separationApplication.id, 'view' ]">{{separationApplication.id}}</a>
                 </td>
@@ -92,10 +78,6 @@
                     | date:'mediumDate'}}
                 </td>
                 <td *ngIf="separationApplication.completedDate != null">{{separationApplication.reasonForLeaving}}</td>
-
-                
-
-
             </tr>
 
 
