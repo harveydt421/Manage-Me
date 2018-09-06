@@ -24,8 +24,8 @@
                 </dd>
                 
             </dl>
-            
-            <button type="button"
+
+            <button type="button" *ngIf="!hasSubmitResignation()"
                     [routerLink]="['/separation-application/new']"
                     class="btn btn-primary">
                 <fa-icon [icon]="'minus-circle'"></fa-icon>&nbsp;<span> Submit Resignation</span>

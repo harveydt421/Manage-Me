@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from 'app/entities/employee/employee.service';
+import { ISeparationApplication } from 'app/shared/model/separation-application.model';
+import { SeparationApplicationService } from 'app/entities/separation-application/separation-application.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -14,10 +16,15 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 export class DashboardComponent implements OnInit, OnDestroy {
     employees: IEmployee[];
     employee: IEmployee;
+    separationApplications: ISeparationApplication[];
+    separationApplication: ISeparationApplication;
     currentAccount: any;
     eventSubscriber: Subscription;
 
-    constructor(private principal: Principal, private jhiAlertService: JhiAlertService, private employeeService: EmployeeService) {}
+    constructor(private principal: Principal,
+                private jhiAlertService: JhiAlertService,
+                private employeeService: EmployeeService,
+                private separationApplicationService: SeparationApplicationService) {}
 
     // private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
     //     let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'manageMeApp';
@@ -37,10 +44,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         );
     }
 
+    checkResignation() {
+        this.separationApplicationService.query().subscribe(
+            (res: HttpResponse<ISeparationApplication[]>) => {
+                this.separationApplications = res.body;
+                this.separationApplication = this.separationApplications.filter(
+                    (separationApplication: ISeparationApplication) => separationApplication.employeeId === this.currentAccount.id
+                )[0];
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+
     ngOnInit() {
         this.principal.identity().then(account => {
             this.currentAccount = account;
             this.loadUser();
+            this.checkResignation();
         });
         // this.router.events.subscribe(event => {
         //     if (event instanceof NavigationEnd) {
@@ -49,7 +69,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // });
     }
 
-    ngOnDestroy(): void {}
+    hasSubmitResignation() {
+        return this.separationApplication != null;
+    }
+
+    ngOnDestroy(): void { }
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
