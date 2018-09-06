@@ -8,6 +8,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
+            <th><span>ID</span></th>
             <th><span>Employee</span></th>
             <th><span>Date of Leaving</span></th>
             <th><span>Submit Date</span></th>
@@ -17,7 +18,12 @@
             </thead>
             <tbody>
             	
-            	<tr *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
+            	 <tr
+                *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
+
+                <td *ngIf="separationApplication.completedDate == null"><a
+                    [routerLink]="['/separation-application', separationApplication.id, 'view' ]">{{separationApplication.id}}</a>
+                </td>
                 <td *ngIf="separationApplication.completedDate == null">
                     <div *ngIf="separationApplication.employee">
                         <a
