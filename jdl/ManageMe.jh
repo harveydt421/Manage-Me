@@ -1,0 +1,51 @@
+// JDL definition for application 'ManageMe' generated with command 'jhipster export-jdl'
+
+entity Employee (employee) {
+  phoneNumber String required maxlength(50) pattern(/(\+\d{1})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s-.]?\d{4}/)
+}
+entity Department (department) {
+  name String required
+}
+entity Location (location) {
+  streetAddress String required,
+  postalCode Integer required,
+  city String required,
+  state String required,
+  country String required
+}
+entity Asset (asset) {
+  name String required,
+  value BigDecimal required min(0)
+}
+entity SeparationApplication (separation_application) {
+  dateOfLeaving Instant required,
+  dateOfSubmission Instant,
+  reasonForLeaving String required,
+  completed Boolean
+}
+entity LineItem (line_item) {
+  feedback String,
+  cleared Boolean
+}
+relationship OneToOne {
+  Employee{user} to User,
+  Department{head} to Employee,
+  Department{representative} to Employee,
+  Department{location} to Location,
+  SeparationApplication{employee} to Employee{separationApplication},
+  LineItem{assetOwed(name)} to Asset
+}
+relationship OneToMany {
+  Employee{asset(name)} to Asset{employee}
+  Department{employee} to Employee{department(name)}
+  SeparationApplication{lineItem} to LineItem{separationApplication}
+  SeparationApplication{functionalRepresentative} to Employee,
+  Employee{notification} to Notification{employee}
+}
+
+entity Notification {
+  message String maxlength(100) required
+}
+
+service Employee, Department, Location, Asset, SeparationApplication, LineItem with serviceClass
+dto * with mapstruct
