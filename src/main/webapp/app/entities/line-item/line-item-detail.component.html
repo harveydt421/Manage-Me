@@ -9,16 +9,20 @@
                 <dd>
                     <span>{{lineItem.feedback}}</span>
                 </dd>
+                <dt><span>Cleared</span></dt>
+                <dd>
+                    <span>{{lineItem.cleared}}</span>
+                </dd>
                 <dt><span>Asset Owed</span></dt>
                 <dd>
-                    <div *ngIf="lineItem.assetOwed">
-                        <a [routerLink]="['/asset', lineItem.assetOwed?.id, 'view']">{{lineItem.assetOwed?.name}}</a>
+                    <div *ngIf="lineItem.assetOwedId">
+                        <a [routerLink]="['/asset', lineItem.assetOwedId, 'view']">{{lineItem.assetOwedName}}</a>
                     </div>
                 </dd>
                 <dt><span>Separation Application</span></dt>
                 <dd>
-                    <div *ngIf="lineItem.separationApplication">
-                        <a [routerLink]="['/separation-application', lineItem.separationApplication?.id, 'view']">{{lineItem.separationApplication.employee.user.firstName.concat(' ', lineItem.separationApplication.employee.user.lastName)}}</a>
+                    <div *ngIf="lineItem.separationApplicationId">
+                        <a [routerLink]="['/separation-application', lineItem.separationApplicationId, 'view']">{{lineItem.separationApplicationId}}</a>
                     </div>
                 </dd>
             </dl>

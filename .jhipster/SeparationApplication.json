@@ -20,8 +20,8 @@
             ]
         },
         {
-        	"fieldName": "completed",
-        	"fieldType": "Boolean"
+            "fieldName": "completed",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
@@ -37,18 +37,20 @@
             "relationshipType": "one-to-many",
             "relationshipName": "lineItem",
             "otherEntityName": "lineItem",
-            "otherEntityField": "id"
+            "otherEntityRelationshipName": "separationApplication"
         },
         {
-            "relationshipType": "one-to-many",
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
             "relationshipName": "functionalRepresentative",
             "otherEntityName": "employee",
-            "otherEntityField": "id"
+            "otherEntityField": "id",
+            "ownerSide": true
         }
     ],
     "changelogDate": "20180807172500",
     "entityTableName": "separation_application",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,

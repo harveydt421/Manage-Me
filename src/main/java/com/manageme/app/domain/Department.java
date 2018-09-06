@@ -1,5 +1,6 @@
 package com.manageme.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -39,6 +42,10 @@ public class Department implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private Location location;
+
+    @OneToMany(mappedBy = "department")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Employee> employees = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -99,6 +106,31 @@ public class Department implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public Department employees(Set<Employee> employees) {
+        this.employees = employees;
+        return this;
+    }
+
+    public Department addEmployee(Employee employee) {
+        this.employees.add(employee);
+        employee.setDepartment(this);
+        return this;
+    }
+
+    public Department removeEmployee(Employee employee) {
+        this.employees.remove(employee);
+        employee.setDepartment(null);
+        return this;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

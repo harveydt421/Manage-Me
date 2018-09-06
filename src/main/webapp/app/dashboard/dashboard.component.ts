@@ -17,11 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
 
-    constructor(
-        private principal: Principal,
-        private jhiAlertService: JhiAlertService,
-        private employeeService: EmployeeService
-        ) {}
+    constructor(private principal: Principal, private jhiAlertService: JhiAlertService, private employeeService: EmployeeService) {}
 
     // private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
     //     let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : 'manageMeApp';
@@ -35,11 +31,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.employeeService.query().subscribe(
             (res: HttpResponse<IEmployee[]>) => {
                 this.employees = res.body;
-                this.employee = this.employees.filter(employee => employee.user.id === this.currentAccount.id)[0];
+                this.employee = this.employees.filter(employee => employee.userId === this.currentAccount.id)[0];
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-        }
+    }
 
     ngOnInit() {
         this.principal.identity().then(account => {
@@ -55,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {}
 
-     private onError(errorMessage: string) {
+    private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 }

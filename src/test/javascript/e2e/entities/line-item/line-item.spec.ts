@@ -32,6 +32,18 @@ describe('LineItem e2e test', () => {
         lineItemComponentsPage.clickOnCreateButton();
         lineItemUpdatePage.setFeedbackInput('feedback');
         expect(lineItemUpdatePage.getFeedbackInput()).toMatch('feedback');
+        lineItemUpdatePage
+            .getClearedInput()
+            .isSelected()
+            .then(selected => {
+                if (selected) {
+                    lineItemUpdatePage.getClearedInput().click();
+                    expect(lineItemUpdatePage.getClearedInput().isSelected()).toBeFalsy();
+                } else {
+                    lineItemUpdatePage.getClearedInput().click();
+                    expect(lineItemUpdatePage.getClearedInput().isSelected()).toBeTruthy();
+                }
+            });
         lineItemUpdatePage.assetOwedSelectLastOption();
         lineItemUpdatePage.separationApplicationSelectLastOption();
         lineItemUpdatePage.save();

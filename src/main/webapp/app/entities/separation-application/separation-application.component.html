@@ -26,6 +26,7 @@
             <th><span>Reason For Leaving</span></th>
             <th><span>Completed</span></th>
             <th><span>Employee</span></th>
+            <th><span>Functional Representatives</span></th>
             <th></th>
             </tr>
             </thead>
@@ -37,13 +38,14 @@
                 <td>{{separationApplication.reasonForLeaving}}</td>
                 <td>{{separationApplication.completed}}</td>
                 <td>
-                    <div *ngIf="separationApplication.employee">
-                        <a [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]" >{{separationApplication.employee?.user.firstName.concat(' ', separationApplication.employee?.user.lastName)}}</a>
+                    <div *ngIf="separationApplication.employeeId">
+                        <a [routerLink]="['../employee', separationApplication.employeeId , 'view' ]" >{{separationApplication.employeeId}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="separationApplication.lineItem">
-                    </div>
+                    <span *ngFor="let functionalRepresentative of separationApplication.functionalRepresentatives; let last = last">
+                            <a class="form-control-static" [routerLink]="['../employee', functionalRepresentative?.id, 'view' ]">{{functionalRepresentative.id}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

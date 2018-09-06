@@ -4,6 +4,10 @@
         {
             "fieldName": "feedback",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "cleared",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
@@ -11,7 +15,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "assetOwed",
             "otherEntityName": "asset",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "lineItem"
         },
@@ -24,7 +28,7 @@
     ],
     "changelogDate": "20180807172501",
     "entityTableName": "line_item",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,

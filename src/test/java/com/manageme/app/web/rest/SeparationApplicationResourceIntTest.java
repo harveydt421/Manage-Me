@@ -5,18 +5,22 @@ import com.manageme.app.ManageMeApp;
 import com.manageme.app.domain.SeparationApplication;
 import com.manageme.app.repository.SeparationApplicationRepository;
 import com.manageme.app.service.SeparationApplicationService;
+import com.manageme.app.service.dto.SeparationApplicationDTO;
+import com.manageme.app.service.mapper.SeparationApplicationMapper;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,12 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 
 import static com.manageme.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,7 +47,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ManageMeApp.class)
-@WithMockUser(username="admin", authorities={"ROLE_ADMIN"}, password = "admin")
 public class SeparationApplicationResourceIntTest {
 
     private static final Instant DEFAULT_DATE_OF_LEAVING = Instant.ofEpochMilli(0L);
@@ -58,8 +63,14 @@ public class SeparationApplicationResourceIntTest {
 
     @Autowired
     private SeparationApplicationRepository separationApplicationRepository;
+    @Mock
+    private SeparationApplicationRepository separationApplicationRepositoryMock;
 
+    @Autowired
+    private SeparationApplicationMapper separationApplicationMapper;
     
+    @Mock
+    private SeparationApplicationService separationApplicationServiceMock;
 
     @Autowired
     private SeparationApplicationService separationApplicationService;
@@ -117,9 +128,10 @@ public class SeparationApplicationResourceIntTest {
         int databaseSizeBeforeCreate = separationApplicationRepository.findAll().size();
 
         // Create the SeparationApplication
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(separationApplication);
         restSeparationApplicationMockMvc.perform(post("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(separationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isCreated());
 
         // Validate the SeparationApplication in the database
@@ -139,11 +151,12 @@ public class SeparationApplicationResourceIntTest {
 
         // Create the SeparationApplication with an existing ID
         separationApplication.setId(1L);
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(separationApplication);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSeparationApplicationMockMvc.perform(post("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(separationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the SeparationApplication in the database
@@ -159,10 +172,11 @@ public class SeparationApplicationResourceIntTest {
         separationApplication.setDateOfLeaving(null);
 
         // Create the SeparationApplication, which fails.
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(separationApplication);
 
         restSeparationApplicationMockMvc.perform(post("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(separationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isBadRequest());
 
         List<SeparationApplication> separationApplicationList = separationApplicationRepository.findAll();
@@ -177,10 +191,11 @@ public class SeparationApplicationResourceIntTest {
         separationApplication.setReasonForLeaving(null);
 
         // Create the SeparationApplication, which fails.
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(separationApplication);
 
         restSeparationApplicationMockMvc.perform(post("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(separationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isBadRequest());
 
         List<SeparationApplication> separationApplicationList = separationApplicationRepository.findAll();
@@ -204,6 +219,36 @@ public class SeparationApplicationResourceIntTest {
             .andExpect(jsonPath("$.[*].completed").value(hasItem(DEFAULT_COMPLETED.booleanValue())));
     }
     
+    public void getAllSeparationApplicationsWithEagerRelationshipsIsEnabled() throws Exception {
+        SeparationApplicationResource separationApplicationResource = new SeparationApplicationResource(separationApplicationServiceMock);
+        when(separationApplicationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restSeparationApplicationMockMvc = MockMvcBuilders.standaloneSetup(separationApplicationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restSeparationApplicationMockMvc.perform(get("/api/separation-applications?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(separationApplicationServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllSeparationApplicationsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        SeparationApplicationResource separationApplicationResource = new SeparationApplicationResource(separationApplicationServiceMock);
+            when(separationApplicationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restSeparationApplicationMockMvc = MockMvcBuilders.standaloneSetup(separationApplicationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restSeparationApplicationMockMvc.perform(get("/api/separation-applications?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(separationApplicationServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -233,7 +278,7 @@ public class SeparationApplicationResourceIntTest {
     @Transactional
     public void updateSeparationApplication() throws Exception {
         // Initialize the database
-        separationApplicationService.save(separationApplication);
+        separationApplicationRepository.saveAndFlush(separationApplication);
 
         int databaseSizeBeforeUpdate = separationApplicationRepository.findAll().size();
 
@@ -246,10 +291,11 @@ public class SeparationApplicationResourceIntTest {
             .dateOfSubmission(UPDATED_DATE_OF_SUBMISSION)
             .reasonForLeaving(UPDATED_REASON_FOR_LEAVING)
             .completed(UPDATED_COMPLETED);
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(updatedSeparationApplication);
 
         restSeparationApplicationMockMvc.perform(put("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSeparationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isOk());
 
         // Validate the SeparationApplication in the database
@@ -268,11 +314,12 @@ public class SeparationApplicationResourceIntTest {
         int databaseSizeBeforeUpdate = separationApplicationRepository.findAll().size();
 
         // Create the SeparationApplication
+        SeparationApplicationDTO separationApplicationDTO = separationApplicationMapper.toDto(separationApplication);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSeparationApplicationMockMvc.perform(put("/api/separation-applications")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(separationApplication)))
+            .content(TestUtil.convertObjectToJsonBytes(separationApplicationDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the SeparationApplication in the database
@@ -284,7 +331,7 @@ public class SeparationApplicationResourceIntTest {
     @Transactional
     public void deleteSeparationApplication() throws Exception {
         // Initialize the database
-        separationApplicationService.save(separationApplication);
+        separationApplicationRepository.saveAndFlush(separationApplication);
 
         int databaseSizeBeforeDelete = separationApplicationRepository.findAll().size();
 
@@ -311,5 +358,28 @@ public class SeparationApplicationResourceIntTest {
         assertThat(separationApplication1).isNotEqualTo(separationApplication2);
         separationApplication1.setId(null);
         assertThat(separationApplication1).isNotEqualTo(separationApplication2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(SeparationApplicationDTO.class);
+        SeparationApplicationDTO separationApplicationDTO1 = new SeparationApplicationDTO();
+        separationApplicationDTO1.setId(1L);
+        SeparationApplicationDTO separationApplicationDTO2 = new SeparationApplicationDTO();
+        assertThat(separationApplicationDTO1).isNotEqualTo(separationApplicationDTO2);
+        separationApplicationDTO2.setId(separationApplicationDTO1.getId());
+        assertThat(separationApplicationDTO1).isEqualTo(separationApplicationDTO2);
+        separationApplicationDTO2.setId(2L);
+        assertThat(separationApplicationDTO1).isNotEqualTo(separationApplicationDTO2);
+        separationApplicationDTO1.setId(null);
+        assertThat(separationApplicationDTO1).isNotEqualTo(separationApplicationDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(separationApplicationMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(separationApplicationMapper.fromId(null)).isNull();
     }
 }

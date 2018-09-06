@@ -2,15 +2,18 @@ package com.manageme.app.service;
 
 import com.manageme.app.domain.LineItem;
 import com.manageme.app.repository.LineItemRepository;
+import com.manageme.app.service.dto.LineItemDTO;
+import com.manageme.app.service.mapper.LineItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 /**
  * Service Implementation for managing LineItem.
  */
@@ -22,18 +25,24 @@ public class LineItemService {
 
     private final LineItemRepository lineItemRepository;
 
-    public LineItemService(LineItemRepository lineItemRepository) {
+    private final LineItemMapper lineItemMapper;
+
+    public LineItemService(LineItemRepository lineItemRepository, LineItemMapper lineItemMapper) {
         this.lineItemRepository = lineItemRepository;
+        this.lineItemMapper = lineItemMapper;
     }
 
     /**
      * Save a lineItem.
      *
-     * @param lineItem the entity to save
+     * @param lineItemDTO the entity to save
      * @return the persisted entity
      */
-    public LineItem save(LineItem lineItem) {
-        log.debug("Request to save LineItem : {}", lineItem);        return lineItemRepository.save(lineItem);
+    public LineItemDTO save(LineItemDTO lineItemDTO) {
+        log.debug("Request to save LineItem : {}", lineItemDTO);
+        LineItem lineItem = lineItemMapper.toEntity(lineItemDTO);
+        lineItem = lineItemRepository.save(lineItem);
+        return lineItemMapper.toDto(lineItem);
     }
 
     /**
@@ -42,9 +51,11 @@ public class LineItemService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<LineItem> findAll() {
+    public List<LineItemDTO> findAll() {
         log.debug("Request to get all LineItems");
-        return lineItemRepository.findAll();
+        return lineItemRepository.findAll().stream()
+            .map(lineItemMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -55,9 +66,10 @@ public class LineItemService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<LineItem> findOne(Long id) {
+    public Optional<LineItemDTO> findOne(Long id) {
         log.debug("Request to get LineItem : {}", id);
-        return lineItemRepository.findById(id);
+        return lineItemRepository.findById(id)
+            .map(lineItemMapper::toDto);
     }
 
     /**

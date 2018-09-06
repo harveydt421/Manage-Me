@@ -38,10 +38,10 @@ export class LineItemUpdateComponent implements OnInit {
         });
         this.assetService.query({ filter: 'lineitem-is-null' }).subscribe(
             (res: HttpResponse<IAsset[]>) => {
-                if (!this.lineItem.assetOwed || !this.lineItem.assetOwed.id) {
+                if (!this.lineItem.assetOwedId) {
                     this.assetoweds = res.body;
                 } else {
-                    this.assetService.find(this.lineItem.assetOwed.id).subscribe(
+                    this.assetService.find(this.lineItem.assetOwedId).subscribe(
                         (subRes: HttpResponse<IAsset>) => {
                             this.assetoweds = [subRes.body].concat(res.body);
                         },

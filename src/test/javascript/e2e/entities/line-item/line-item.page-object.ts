@@ -18,6 +18,7 @@ export class LineItemUpdatePage {
     saveButton = element(by.id('save-entity'));
     cancelButton = element(by.id('cancel-save'));
     feedbackInput = element(by.id('field_feedback'));
+    clearedInput = element(by.id('field_cleared'));
     assetOwedSelect = element(by.id('field_assetOwed'));
     separationApplicationSelect = element(by.id('field_separationApplication'));
 
@@ -33,6 +34,9 @@ export class LineItemUpdatePage {
         return this.feedbackInput.getAttribute('value');
     }
 
+    getClearedInput() {
+        return this.clearedInput;
+    }
     assetOwedSelectLastOption(): promise.Promise<void> {
         return this.assetOwedSelect
             .all(by.tagName('option'))

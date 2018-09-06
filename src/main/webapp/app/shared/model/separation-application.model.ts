@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
-import { IEmployee } from 'app/shared/model//employee.model';
 import { ILineItem } from 'app/shared/model//line-item.model';
+import { IEmployee } from 'app/shared/model//employee.model';
 
 export interface ISeparationApplication {
     id?: number;
@@ -8,7 +8,8 @@ export interface ISeparationApplication {
     dateOfSubmission?: Moment;
     reasonForLeaving?: string;
     completed?: boolean;
-    employee?: IEmployee;
+    employeeId?: number;
+    employeeName?: string;
     lineItems?: ILineItem[];
     functionalRepresentatives?: IEmployee[];
 }
@@ -20,9 +21,10 @@ export class SeparationApplication implements ISeparationApplication {
         public dateOfSubmission?: Moment,
         public reasonForLeaving?: string,
         public completed?: boolean,
-        public employee?: IEmployee,
+        public employeeId?: number,
         public lineItems?: ILineItem[],
-        public functionalRepresentatives?: IEmployee[]
+        public functionalRepresentatives?: IEmployee[],
+        public empoyeeName?: string
     ) {
         this.completed = false;
     }

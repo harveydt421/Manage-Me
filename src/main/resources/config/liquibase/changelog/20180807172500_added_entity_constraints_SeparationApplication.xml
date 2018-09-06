@@ -14,5 +14,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="employee"/>
 
+        <addForeignKeyConstraint baseColumnNames="separation_applications_id"
+                                 baseTableName="separation_application_functional_representative"
+                                 constraintName="fk_separation_application_functional_representative_separation_applications_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="separation_application"/>
+        <addForeignKeyConstraint baseColumnNames="functional_representatives_id"
+                                 baseTableName="separation_application_functional_representative"
+                                 constraintName="fk_separation_application_functional_representative_functional_representatives_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="employee"/>
+        
     </changeSet>
 </databaseChangeLog>

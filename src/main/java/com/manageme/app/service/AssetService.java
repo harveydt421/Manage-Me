@@ -2,15 +2,18 @@ package com.manageme.app.service;
 
 import com.manageme.app.domain.Asset;
 import com.manageme.app.repository.AssetRepository;
+import com.manageme.app.service.dto.AssetDTO;
+import com.manageme.app.service.mapper.AssetMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 /**
  * Service Implementation for managing Asset.
  */
@@ -22,18 +25,24 @@ public class AssetService {
 
     private final AssetRepository assetRepository;
 
-    public AssetService(AssetRepository assetRepository) {
+    private final AssetMapper assetMapper;
+
+    public AssetService(AssetRepository assetRepository, AssetMapper assetMapper) {
         this.assetRepository = assetRepository;
+        this.assetMapper = assetMapper;
     }
 
     /**
      * Save a asset.
      *
-     * @param asset the entity to save
+     * @param assetDTO the entity to save
      * @return the persisted entity
      */
-    public Asset save(Asset asset) {
-        log.debug("Request to save Asset : {}", asset);        return assetRepository.save(asset);
+    public AssetDTO save(AssetDTO assetDTO) {
+        log.debug("Request to save Asset : {}", assetDTO);
+        Asset asset = assetMapper.toEntity(assetDTO);
+        asset = assetRepository.save(asset);
+        return assetMapper.toDto(asset);
     }
 
     /**
@@ -42,9 +51,11 @@ public class AssetService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<Asset> findAll() {
+    public List<AssetDTO> findAll() {
         log.debug("Request to get all Assets");
-        return assetRepository.findAll();
+        return assetRepository.findAll().stream()
+            .map(assetMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
 
@@ -55,9 +66,10 @@ public class AssetService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<Asset> findOne(Long id) {
+    public Optional<AssetDTO> findOne(Long id) {
         log.debug("Request to get Asset : {}", id);
-        return assetRepository.findById(id);
+        return assetRepository.findById(id)
+            .map(assetMapper::toDto);
     }
 
     /**

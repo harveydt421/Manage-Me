@@ -5,6 +5,8 @@ import com.manageme.app.ManageMeApp;
 import com.manageme.app.domain.LineItem;
 import com.manageme.app.repository.LineItemRepository;
 import com.manageme.app.service.LineItemService;
+import com.manageme.app.service.dto.LineItemDTO;
+import com.manageme.app.service.mapper.LineItemMapper;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -43,9 +45,15 @@ public class LineItemResourceIntTest {
     private static final String DEFAULT_FEEDBACK = "AAAAAAAAAA";
     private static final String UPDATED_FEEDBACK = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_CLEARED = false;
+    private static final Boolean UPDATED_CLEARED = true;
+
     @Autowired
     private LineItemRepository lineItemRepository;
 
+
+    @Autowired
+    private LineItemMapper lineItemMapper;
     
 
     @Autowired
@@ -86,7 +94,8 @@ public class LineItemResourceIntTest {
      */
     public static LineItem createEntity(EntityManager em) {
         LineItem lineItem = new LineItem()
-            .feedback(DEFAULT_FEEDBACK);
+            .feedback(DEFAULT_FEEDBACK)
+            .cleared(DEFAULT_CLEARED);
         return lineItem;
     }
 
@@ -101,9 +110,10 @@ public class LineItemResourceIntTest {
         int databaseSizeBeforeCreate = lineItemRepository.findAll().size();
 
         // Create the LineItem
+        LineItemDTO lineItemDTO = lineItemMapper.toDto(lineItem);
         restLineItemMockMvc.perform(post("/api/line-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(lineItem)))
+            .content(TestUtil.convertObjectToJsonBytes(lineItemDTO)))
             .andExpect(status().isCreated());
 
         // Validate the LineItem in the database
@@ -111,6 +121,7 @@ public class LineItemResourceIntTest {
         assertThat(lineItemList).hasSize(databaseSizeBeforeCreate + 1);
         LineItem testLineItem = lineItemList.get(lineItemList.size() - 1);
         assertThat(testLineItem.getFeedback()).isEqualTo(DEFAULT_FEEDBACK);
+        assertThat(testLineItem.isCleared()).isEqualTo(DEFAULT_CLEARED);
     }
 
     @Test
@@ -120,11 +131,12 @@ public class LineItemResourceIntTest {
 
         // Create the LineItem with an existing ID
         lineItem.setId(1L);
+        LineItemDTO lineItemDTO = lineItemMapper.toDto(lineItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLineItemMockMvc.perform(post("/api/line-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(lineItem)))
+            .content(TestUtil.convertObjectToJsonBytes(lineItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the LineItem in the database
@@ -143,7 +155,8 @@ public class LineItemResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(lineItem.getId().intValue())))
-            .andExpect(jsonPath("$.[*].feedback").value(hasItem(DEFAULT_FEEDBACK.toString())));
+            .andExpect(jsonPath("$.[*].feedback").value(hasItem(DEFAULT_FEEDBACK.toString())))
+            .andExpect(jsonPath("$.[*].cleared").value(hasItem(DEFAULT_CLEARED.booleanValue())));
     }
     
 
@@ -158,7 +171,8 @@ public class LineItemResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(lineItem.getId().intValue()))
-            .andExpect(jsonPath("$.feedback").value(DEFAULT_FEEDBACK.toString()));
+            .andExpect(jsonPath("$.feedback").value(DEFAULT_FEEDBACK.toString()))
+            .andExpect(jsonPath("$.cleared").value(DEFAULT_CLEARED.booleanValue()));
     }
     @Test
     @Transactional
@@ -172,7 +186,7 @@ public class LineItemResourceIntTest {
     @Transactional
     public void updateLineItem() throws Exception {
         // Initialize the database
-        lineItemService.save(lineItem);
+        lineItemRepository.saveAndFlush(lineItem);
 
         int databaseSizeBeforeUpdate = lineItemRepository.findAll().size();
 
@@ -181,11 +195,13 @@ public class LineItemResourceIntTest {
         // Disconnect from session so that the updates on updatedLineItem are not directly saved in db
         em.detach(updatedLineItem);
         updatedLineItem
-            .feedback(UPDATED_FEEDBACK);
+            .feedback(UPDATED_FEEDBACK)
+            .cleared(UPDATED_CLEARED);
+        LineItemDTO lineItemDTO = lineItemMapper.toDto(updatedLineItem);
 
         restLineItemMockMvc.perform(put("/api/line-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedLineItem)))
+            .content(TestUtil.convertObjectToJsonBytes(lineItemDTO)))
             .andExpect(status().isOk());
 
         // Validate the LineItem in the database
@@ -193,6 +209,7 @@ public class LineItemResourceIntTest {
         assertThat(lineItemList).hasSize(databaseSizeBeforeUpdate);
         LineItem testLineItem = lineItemList.get(lineItemList.size() - 1);
         assertThat(testLineItem.getFeedback()).isEqualTo(UPDATED_FEEDBACK);
+        assertThat(testLineItem.isCleared()).isEqualTo(UPDATED_CLEARED);
     }
 
     @Test
@@ -201,11 +218,12 @@ public class LineItemResourceIntTest {
         int databaseSizeBeforeUpdate = lineItemRepository.findAll().size();
 
         // Create the LineItem
+        LineItemDTO lineItemDTO = lineItemMapper.toDto(lineItem);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restLineItemMockMvc.perform(put("/api/line-items")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(lineItem)))
+            .content(TestUtil.convertObjectToJsonBytes(lineItemDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the LineItem in the database
@@ -217,7 +235,7 @@ public class LineItemResourceIntTest {
     @Transactional
     public void deleteLineItem() throws Exception {
         // Initialize the database
-        lineItemService.save(lineItem);
+        lineItemRepository.saveAndFlush(lineItem);
 
         int databaseSizeBeforeDelete = lineItemRepository.findAll().size();
 
@@ -244,5 +262,28 @@ public class LineItemResourceIntTest {
         assertThat(lineItem1).isNotEqualTo(lineItem2);
         lineItem1.setId(null);
         assertThat(lineItem1).isNotEqualTo(lineItem2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(LineItemDTO.class);
+        LineItemDTO lineItemDTO1 = new LineItemDTO();
+        lineItemDTO1.setId(1L);
+        LineItemDTO lineItemDTO2 = new LineItemDTO();
+        assertThat(lineItemDTO1).isNotEqualTo(lineItemDTO2);
+        lineItemDTO2.setId(lineItemDTO1.getId());
+        assertThat(lineItemDTO1).isEqualTo(lineItemDTO2);
+        lineItemDTO2.setId(2L);
+        assertThat(lineItemDTO1).isNotEqualTo(lineItemDTO2);
+        lineItemDTO1.setId(null);
+        assertThat(lineItemDTO1).isNotEqualTo(lineItemDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(lineItemMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(lineItemMapper.fromId(null)).isNull();
     }
 }

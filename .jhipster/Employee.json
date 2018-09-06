@@ -5,8 +5,12 @@
             "fieldName": "phoneNumber",
             "fieldType": "String",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMaxlength": 50,
+            "fieldValidateRulesPattern": "(\\+\\d{1})?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s-.]?\\d{4}"
         }
     ],
     "relationships": [
@@ -23,11 +27,30 @@
             "relationshipName": "asset",
             "otherEntityName": "asset",
             "otherEntityRelationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "notification",
+            "otherEntityName": "notification",
+            "otherEntityRelationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "separationApplication",
+            "otherEntityName": "separationApplication",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "employee"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "department",
+            "otherEntityName": "department",
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20180807154715",
     "entityTableName": "employee",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,

@@ -46,12 +46,15 @@ public class SeparationApplication implements Serializable {
     @JoinColumn(unique = true)
     private Employee employee;
 
-    @OneToMany(mappedBy = "separationApplication", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "separationApplication")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LineItem> lineItems = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "separation_application_functional_representative",
+               joinColumns = @JoinColumn(name = "separation_applications_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "functional_representatives_id", referencedColumnName = "id"))
     private Set<Employee> functionalRepresentatives = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -164,13 +167,11 @@ public class SeparationApplication implements Serializable {
 
     public SeparationApplication addFunctionalRepresentative(Employee employee) {
         this.functionalRepresentatives.add(employee);
-        //employee.setSeparationApplication(this);
         return this;
     }
 
     public SeparationApplication removeFunctionalRepresentative(Employee employee) {
         this.functionalRepresentatives.remove(employee);
-        //employee.setSeparationApplication(null);
         return this;
     }
 

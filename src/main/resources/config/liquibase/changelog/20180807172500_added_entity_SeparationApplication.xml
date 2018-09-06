@@ -44,6 +44,17 @@
         <dropDefaultValue tableName="separation_application" columnName="date_of_leaving" columnDataType="datetime"/>
         <dropDefaultValue tableName="separation_application" columnName="date_of_submission" columnDataType="datetime"/>
         
+        <createTable tableName="separation_application_functional_representative">
+            <column name="functional_representatives_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="separation_applications_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="separation_applications_id, functional_representatives_id" tableName="separation_application_functional_representative"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

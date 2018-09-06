@@ -1,15 +1,14 @@
 package com.manageme.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.manageme.app.domain.Employee;
 import com.manageme.app.service.EmployeeService;
 import com.manageme.app.web.rest.errors.BadRequestAlertException;
 import com.manageme.app.web.rest.util.HeaderUtil;
+import com.manageme.app.service.dto.EmployeeDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +17,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing Employee.
@@ -39,19 +39,18 @@ public class EmployeeResource {
     /**
      * POST  /employees : Create a new employee.
      *
-     * @param employee the employee to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new employee, or with status 400 (Bad Request) if the employee has already an ID
+     * @param employeeDTO the employeeDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new employeeDTO, or with status 400 (Bad Request) if the employee has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/employees")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
-        log.debug("REST request to save Employee : {}", employee);
-        if (employee.getId() != null) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) throws URISyntaxException {
+        log.debug("REST request to save Employee : {}", employeeDTO);
+        if (employeeDTO.getId() != null) {
             throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Employee result = employeeService.save(employee);
+        EmployeeDTO result = employeeService.save(employeeDTO);
         return ResponseEntity.created(new URI("/api/employees/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -60,34 +59,38 @@ public class EmployeeResource {
     /**
      * PUT  /employees : Updates an existing employee.
      *
-     * @param employee the employee to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated employee,
-     * or with status 400 (Bad Request) if the employee is not valid,
-     * or with status 500 (Internal Server Error) if the employee couldn't be updated
+     * @param employeeDTO the employeeDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated employeeDTO,
+     * or with status 400 (Bad Request) if the employeeDTO is not valid,
+     * or with status 500 (Internal Server Error) if the employeeDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/employees")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
-        log.debug("REST request to update Employee : {}", employee);
-        if (employee.getId() == null) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) throws URISyntaxException {
+        log.debug("REST request to update Employee : {}", employeeDTO);
+        if (employeeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Employee result = employeeService.save(employee);
+        EmployeeDTO result = employeeService.save(employeeDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employeeDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * GET  /employees : get all the employees.
      *
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of employees in body
      */
     @GetMapping("/employees")
     @Timed
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDTO> getAllEmployees(@RequestParam(required = false) String filter) {
+        if ("separationapplication-is-null".equals(filter)) {
+            log.debug("REST request to get all Employees where separationApplication is null");
+            return employeeService.findAllWhereSeparationApplicationIsNull();
+        }
         log.debug("REST request to get all Employees");
         return employeeService.findAll();
     }
@@ -95,26 +98,25 @@ public class EmployeeResource {
     /**
      * GET  /employees/:id : get the "id" employee.
      *
-     * @param id the id of the employee to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the employee, or with status 404 (Not Found)
+     * @param id the id of the employeeDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the employeeDTO, or with status 404 (Not Found)
      */
     @GetMapping("/employees/{id}")
     @Timed
-    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable Long id) {
         log.debug("REST request to get Employee : {}", id);
-        Optional<Employee> employee = employeeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(employee);
+        Optional<EmployeeDTO> employeeDTO = employeeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(employeeDTO);
     }
 
     /**
      * DELETE  /employees/:id : delete the "id" employee.
      *
-     * @param id the id of the employee to delete
+     * @param id the id of the employeeDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/employees/{id}")
     @Timed
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeService.delete(id);

@@ -24,6 +24,10 @@
             <column name="feedback" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="cleared" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="asset_owed_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

@@ -49,6 +49,7 @@ describe('SeparationApplication e2e test', () => {
                 }
             });
         separationApplicationUpdatePage.employeeSelectLastOption();
+        // separationApplicationUpdatePage.functionalRepresentativeSelectLastOption();
         separationApplicationUpdatePage.save();
         expect(separationApplicationUpdatePage.getSaveButton().isPresent()).toBeFalsy();
     });

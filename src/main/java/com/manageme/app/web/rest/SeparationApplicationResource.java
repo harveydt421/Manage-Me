@@ -1,10 +1,10 @@
 package com.manageme.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.manageme.app.domain.SeparationApplication;
 import com.manageme.app.service.SeparationApplicationService;
 import com.manageme.app.web.rest.errors.BadRequestAlertException;
 import com.manageme.app.web.rest.util.HeaderUtil;
+import com.manageme.app.service.dto.SeparationApplicationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,18 +38,18 @@ public class SeparationApplicationResource {
     /**
      * POST  /separation-applications : Create a new separationApplication.
      *
-     * @param separationApplication the separationApplication to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new separationApplication, or with status 400 (Bad Request) if the separationApplication has already an ID
+     * @param separationApplicationDTO the separationApplicationDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new separationApplicationDTO, or with status 400 (Bad Request) if the separationApplication has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/separation-applications")
     @Timed
-    public ResponseEntity<SeparationApplication> createSeparationApplication(@Valid @RequestBody SeparationApplication separationApplication) throws URISyntaxException {
-        log.debug("REST request to save SeparationApplication : {}", separationApplication);
-        if (separationApplication.getId() != null) {
+    public ResponseEntity<SeparationApplicationDTO> createSeparationApplication(@Valid @RequestBody SeparationApplicationDTO separationApplicationDTO) throws URISyntaxException {
+        log.debug("REST request to save SeparationApplication : {}", separationApplicationDTO);
+        if (separationApplicationDTO.getId() != null) {
             throw new BadRequestAlertException("A new separationApplication cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SeparationApplication result = separationApplicationService.save(separationApplication);
+        SeparationApplicationDTO result = separationApplicationService.save(separationApplicationDTO);
         return ResponseEntity.created(new URI("/api/separation-applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -58,33 +58,34 @@ public class SeparationApplicationResource {
     /**
      * PUT  /separation-applications : Updates an existing separationApplication.
      *
-     * @param separationApplication the separationApplication to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated separationApplication,
-     * or with status 400 (Bad Request) if the separationApplication is not valid,
-     * or with status 500 (Internal Server Error) if the separationApplication couldn't be updated
+     * @param separationApplicationDTO the separationApplicationDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated separationApplicationDTO,
+     * or with status 400 (Bad Request) if the separationApplicationDTO is not valid,
+     * or with status 500 (Internal Server Error) if the separationApplicationDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/separation-applications")
     @Timed
-    public ResponseEntity<SeparationApplication> updateSeparationApplication(@Valid @RequestBody SeparationApplication separationApplication) throws URISyntaxException {
-        log.debug("REST request to update SeparationApplication : {}", separationApplication);
-        if (separationApplication.getId() == null) {
+    public ResponseEntity<SeparationApplicationDTO> updateSeparationApplication(@Valid @RequestBody SeparationApplicationDTO separationApplicationDTO) throws URISyntaxException {
+        log.debug("REST request to update SeparationApplication : {}", separationApplicationDTO);
+        if (separationApplicationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        SeparationApplication result = separationApplicationService.save(separationApplication);
+        SeparationApplicationDTO result = separationApplicationService.save(separationApplicationDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, separationApplication.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, separationApplicationDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * GET  /separation-applications : get all the separationApplications.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of separationApplications in body
      */
     @GetMapping("/separation-applications")
     @Timed
-    public List<SeparationApplication> getAllSeparationApplications() {
+    public List<SeparationApplicationDTO> getAllSeparationApplications(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all SeparationApplications");
         return separationApplicationService.findAll();
     }
@@ -92,21 +93,21 @@ public class SeparationApplicationResource {
     /**
      * GET  /separation-applications/:id : get the "id" separationApplication.
      *
-     * @param id the id of the separationApplication to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the separationApplication, or with status 404 (Not Found)
+     * @param id the id of the separationApplicationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the separationApplicationDTO, or with status 404 (Not Found)
      */
     @GetMapping("/separation-applications/{id}")
     @Timed
-    public ResponseEntity<SeparationApplication> getSeparationApplication(@PathVariable Long id) {
+    public ResponseEntity<SeparationApplicationDTO> getSeparationApplication(@PathVariable Long id) {
         log.debug("REST request to get SeparationApplication : {}", id);
-        Optional<SeparationApplication> separationApplication = separationApplicationService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(separationApplication);
+        Optional<SeparationApplicationDTO> separationApplicationDTO = separationApplicationService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(separationApplicationDTO);
     }
 
     /**
      * DELETE  /separation-applications/:id : delete the "id" separationApplication.
      *
-     * @param id the id of the separationApplication to delete
+     * @param id the id of the separationApplicationDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/separation-applications/{id}")

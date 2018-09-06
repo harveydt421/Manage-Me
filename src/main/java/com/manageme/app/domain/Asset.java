@@ -31,6 +31,7 @@ public class Asset implements Serializable {
     private String name;
 
     @NotNull
+    @DecimalMin(value = "0")
     @Column(name = "jhi_value", precision = 10, scale = 2, nullable = false)
     private BigDecimal value;
 

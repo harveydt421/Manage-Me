@@ -1,10 +1,10 @@
 package com.manageme.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.manageme.app.domain.Asset;
 import com.manageme.app.service.AssetService;
 import com.manageme.app.web.rest.errors.BadRequestAlertException;
 import com.manageme.app.web.rest.util.HeaderUtil;
+import com.manageme.app.service.dto.AssetDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,18 +38,18 @@ public class AssetResource {
     /**
      * POST  /assets : Create a new asset.
      *
-     * @param asset the asset to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new asset, or with status 400 (Bad Request) if the asset has already an ID
+     * @param assetDTO the assetDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new assetDTO, or with status 400 (Bad Request) if the asset has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/assets")
     @Timed
-    public ResponseEntity<Asset> createAsset(@Valid @RequestBody Asset asset) throws URISyntaxException {
-        log.debug("REST request to save Asset : {}", asset);
-        if (asset.getId() != null) {
+    public ResponseEntity<AssetDTO> createAsset(@Valid @RequestBody AssetDTO assetDTO) throws URISyntaxException {
+        log.debug("REST request to save Asset : {}", assetDTO);
+        if (assetDTO.getId() != null) {
             throw new BadRequestAlertException("A new asset cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Asset result = assetService.save(asset);
+        AssetDTO result = assetService.save(assetDTO);
         return ResponseEntity.created(new URI("/api/assets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -58,22 +58,22 @@ public class AssetResource {
     /**
      * PUT  /assets : Updates an existing asset.
      *
-     * @param asset the asset to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated asset,
-     * or with status 400 (Bad Request) if the asset is not valid,
-     * or with status 500 (Internal Server Error) if the asset couldn't be updated
+     * @param assetDTO the assetDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated assetDTO,
+     * or with status 400 (Bad Request) if the assetDTO is not valid,
+     * or with status 500 (Internal Server Error) if the assetDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/assets")
     @Timed
-    public ResponseEntity<Asset> updateAsset(@Valid @RequestBody Asset asset) throws URISyntaxException {
-        log.debug("REST request to update Asset : {}", asset);
-        if (asset.getId() == null) {
+    public ResponseEntity<AssetDTO> updateAsset(@Valid @RequestBody AssetDTO assetDTO) throws URISyntaxException {
+        log.debug("REST request to update Asset : {}", assetDTO);
+        if (assetDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Asset result = assetService.save(asset);
+        AssetDTO result = assetService.save(assetDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, asset.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, assetDTO.getId().toString()))
             .body(result);
     }
 
@@ -84,7 +84,7 @@ public class AssetResource {
      */
     @GetMapping("/assets")
     @Timed
-    public List<Asset> getAllAssets() {
+    public List<AssetDTO> getAllAssets() {
         log.debug("REST request to get all Assets");
         return assetService.findAll();
     }
@@ -92,21 +92,21 @@ public class AssetResource {
     /**
      * GET  /assets/:id : get the "id" asset.
      *
-     * @param id the id of the asset to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the asset, or with status 404 (Not Found)
+     * @param id the id of the assetDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the assetDTO, or with status 404 (Not Found)
      */
     @GetMapping("/assets/{id}")
     @Timed
-    public ResponseEntity<Asset> getAsset(@PathVariable Long id) {
+    public ResponseEntity<AssetDTO> getAsset(@PathVariable Long id) {
         log.debug("REST request to get Asset : {}", id);
-        Optional<Asset> asset = assetService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(asset);
+        Optional<AssetDTO> assetDTO = assetService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(assetDTO);
     }
 
     /**
      * DELETE  /assets/:id : delete the "id" asset.
      *
-     * @param id the id of the asset to delete
+     * @param id the id of the assetDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/assets/{id}")

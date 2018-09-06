@@ -40,10 +40,10 @@ export class DepartmentUpdateComponent implements OnInit {
         });
         this.employeeService.query({ filter: 'department-is-null' }).subscribe(
             (res: HttpResponse<IEmployee[]>) => {
-                if (!this.department.head || !this.department.head.id) {
+                if (!this.department.headId) {
                     this.heads = res.body;
                 } else {
-                    this.employeeService.find(this.department.head.id).subscribe(
+                    this.employeeService.find(this.department.headId).subscribe(
                         (subRes: HttpResponse<IEmployee>) => {
                             this.heads = [subRes.body].concat(res.body);
                         },
@@ -55,10 +55,10 @@ export class DepartmentUpdateComponent implements OnInit {
         );
         this.employeeService.query({ filter: 'department-is-null' }).subscribe(
             (res: HttpResponse<IEmployee[]>) => {
-                if (!this.department.representative || !this.department.representative.id) {
+                if (!this.department.representativeId) {
                     this.representatives = res.body;
                 } else {
-                    this.employeeService.find(this.department.representative.id).subscribe(
+                    this.employeeService.find(this.department.representativeId).subscribe(
                         (subRes: HttpResponse<IEmployee>) => {
                             this.representatives = [subRes.body].concat(res.body);
                         },
@@ -70,10 +70,10 @@ export class DepartmentUpdateComponent implements OnInit {
         );
         this.locationService.query({ filter: 'department-is-null' }).subscribe(
             (res: HttpResponse<ILocation[]>) => {
-                if (!this.department.location || !this.department.location.id) {
+                if (!this.department.locationId) {
                     this.locations = res.body;
                 } else {
-                    this.locationService.find(this.department.location.id).subscribe(
+                    this.locationService.find(this.department.locationId).subscribe(
                         (subRes: HttpResponse<ILocation>) => {
                             this.locations = [subRes.body].concat(res.body);
                         },

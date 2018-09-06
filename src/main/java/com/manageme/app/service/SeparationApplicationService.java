@@ -2,18 +2,20 @@ package com.manageme.app.service;
 
 import com.manageme.app.domain.SeparationApplication;
 import com.manageme.app.repository.SeparationApplicationRepository;
-import com.manageme.app.security.AuthoritiesConstants;
-import com.manageme.app.security.SecurityUtils;
-
+import com.manageme.app.service.dto.SeparationApplicationDTO;
+import com.manageme.app.service.mapper.SeparationApplicationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 /**
  * Service Implementation for managing SeparationApplication.
  */
@@ -25,19 +27,24 @@ public class SeparationApplicationService {
 
     private final SeparationApplicationRepository separationApplicationRepository;
 
-    public SeparationApplicationService(SeparationApplicationRepository separationApplicationRepository) {
+    private final SeparationApplicationMapper separationApplicationMapper;
+
+    public SeparationApplicationService(SeparationApplicationRepository separationApplicationRepository, SeparationApplicationMapper separationApplicationMapper) {
         this.separationApplicationRepository = separationApplicationRepository;
+        this.separationApplicationMapper = separationApplicationMapper;
     }
 
     /**
      * Save a separationApplication.
      *
-     * @param separationApplication the entity to save
+     * @param separationApplicationDTO the entity to save
      * @return the persisted entity
      */
-    public SeparationApplication save(SeparationApplication separationApplication) {
-        log.debug("Request to save SeparationApplication : {}", separationApplication);
-        return separationApplicationRepository.save(separationApplication);
+    public SeparationApplicationDTO save(SeparationApplicationDTO separationApplicationDTO) {
+        log.debug("Request to save SeparationApplication : {}", separationApplicationDTO);
+        SeparationApplication separationApplication = separationApplicationMapper.toEntity(separationApplicationDTO);
+        separationApplication = separationApplicationRepository.save(separationApplication);
+        return separationApplicationMapper.toDto(separationApplication);
     }
 
     /**
@@ -46,18 +53,22 @@ public class SeparationApplicationService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<SeparationApplication> findAll() {
+    public List<SeparationApplicationDTO> findAll() {
         log.debug("Request to get all SeparationApplications");
-        List<SeparationApplication> result;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.HUMAN_RESOURCES)) {
-        	result = separationApplicationRepository.findAll();
-        } else {
-        	 result = separationApplicationRepository.findAllByEmployeeUserLogin(SecurityUtils.getCurrentUserLogin().get());
-        }
-        return result;
+        return separationApplicationRepository.findAllWithEagerRelationships().stream()
+            .map(separationApplicationMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     * Get all the SeparationApplication with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<SeparationApplicationDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return separationApplicationRepository.findAllWithEagerRelationships(pageable).map(separationApplicationMapper::toDto);
+    }
+    
 
     /**
      * Get one separationApplication by id.
@@ -66,16 +77,10 @@ public class SeparationApplicationService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public Optional<SeparationApplication> findOne(Long id) {
+    public Optional<SeparationApplicationDTO> findOne(Long id) {
         log.debug("Request to get SeparationApplication : {}", id);
-        Optional<SeparationApplication> result;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-        	SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FUNCTIONAL_REPRESENTATIVE)) {
-        	result = separationApplicationRepository.findById(id);        	
-        } else {
-        	result = separationApplicationRepository.findOneByIdAndEmployeeUserLogin(id, SecurityUtils.getCurrentUserLogin().get());
-        }
-        return result;
+        return separationApplicationRepository.findOneWithEagerRelationships(id)
+            .map(separationApplicationMapper::toDto);
     }
 
     /**

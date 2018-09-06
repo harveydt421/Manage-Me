@@ -16,6 +16,7 @@
             <tr>
             <th><span>ID</span></th>
             <th><span>Feedback</span></th>
+            <th><span>Cleared</span></th>
             <th><span>Asset Owed</span></th>
             <th><span>Separation Application</span></th>
             <th></th>
@@ -25,14 +26,15 @@
             <tr *ngFor="let lineItem of lineItems ;trackBy: trackId">
                 <td><a [routerLink]="['/line-item', lineItem.id, 'view' ]">{{lineItem.id}}</a></td>
                 <td>{{lineItem.feedback}}</td>
+                <td>{{lineItem.cleared}}</td>
                 <td>
-                    <div *ngIf="lineItem.assetOwed">
-                        <a [routerLink]="['../asset', lineItem.assetOwed?.id, 'view' ]" >{{lineItem.assetOwed?.name}}</a>
+                    <div *ngIf="lineItem.assetOwedId">
+                        <a [routerLink]="['../asset', lineItem.assetOwedId , 'view' ]" >{{lineItem.assetOwedName}}</a>
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="lineItem.separationApplication">
-                        <a [routerLink]="['../separation-application', lineItem.separationApplication?.id, 'view' ]" >{{lineItem.separationApplication.employee.user.firstName.concat(' ', lineItem.separationApplication.employee.user.lastName)}}</a>
+                    <div *ngIf="lineItem.separationApplicationId">
+                        <a [routerLink]="['../separation-application', lineItem.separationApplicationId , 'view' ]" >{{lineItem.separationApplicationId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

@@ -10,8 +10,6 @@ import { ISeparationApplication } from 'app/shared/model/separation-application.
 import { SeparationApplicationService } from './separation-application.service';
 import { IEmployee } from 'app/shared/model/employee.model';
 import { EmployeeService } from 'app/entities/employee';
-import { ILineItem } from 'app/shared/model/line-item.model';
-import { IUser, UserService } from 'app/core';
 
 @Component({
     selector: 'jhi-separation-application-update',
@@ -20,20 +18,17 @@ import { IUser, UserService } from 'app/core';
 export class SeparationApplicationUpdateComponent implements OnInit {
     private _separationApplication: ISeparationApplication;
     isSaving: boolean;
-    functionalRepresentatives: IEmployee[] = [];
+
     employees: IEmployee[];
+
     dateOfLeaving: string;
     dateOfSubmission: string;
-
-    lineItem: string;
-    lineItems: ILineItem[] = [];
 
     constructor(
         private jhiAlertService: JhiAlertService,
         private separationApplicationService: SeparationApplicationService,
         private employeeService: EmployeeService,
-        private activatedRoute: ActivatedRoute,
-        private userService: UserService
+        private activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
@@ -41,28 +36,24 @@ export class SeparationApplicationUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ separationApplication }) => {
             this.separationApplication = separationApplication;
         });
-        this.employeeService.query().subscribe((res: HttpResponse<IEmployee[]>) => {
-            res.body.forEach((employee: IEmployee) => {
-                this.userService.find(employee.user.login).subscribe((subRes: HttpResponse<IUser>) => {
-                    if (subRes.body.authorities.includes('ROLE_FUNCTIONAL_REPRESENTATIVE')) {
-                        this.functionalRepresentatives.push(employee);
-                    }
-                });
-            });
-        });
-
         this.employeeService.query({ filter: 'separationapplication-is-null' }).subscribe(
             (res: HttpResponse<IEmployee[]>) => {
-                if (!this.separationApplication.employee || !this.separationApplication.employee.id) {
+                if (!this.separationApplication.employeeId) {
                     this.employees = res.body;
                 } else {
-                    this.employeeService.find(this.separationApplication.employee.id).subscribe(
+                    this.employeeService.find(this.separationApplication.employeeId).subscribe(
                         (subRes: HttpResponse<IEmployee>) => {
                             this.employees = [subRes.body].concat(res.body);
                         },
                         (subRes: HttpErrorResponse) => this.onError(subRes.message)
                     );
                 }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.employeeService.query().subscribe(
+            (res: HttpResponse<IEmployee[]>) => {
+                this.employees = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -106,6 +97,17 @@ export class SeparationApplicationUpdateComponent implements OnInit {
     trackEmployeeById(index: number, item: IEmployee) {
         return item.id;
     }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
+    }
     get separationApplication() {
         return this._separationApplication;
     }
@@ -114,10 +116,5 @@ export class SeparationApplicationUpdateComponent implements OnInit {
         this._separationApplication = separationApplication;
         this.dateOfLeaving = moment(separationApplication.dateOfLeaving).format(DATE_TIME_FORMAT);
         this.dateOfSubmission = moment(separationApplication.dateOfSubmission).format(DATE_TIME_FORMAT);
-    }
-
-    addLineItem() {
-        this.lineItems.push({ feedback: this.lineItem });
-        this.lineItem = '';
     }
 }

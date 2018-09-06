@@ -5,6 +5,8 @@ import com.manageme.app.ManageMeApp;
 import com.manageme.app.domain.Employee;
 import com.manageme.app.repository.EmployeeRepository;
 import com.manageme.app.service.EmployeeService;
+import com.manageme.app.service.dto.EmployeeDTO;
+import com.manageme.app.service.mapper.EmployeeMapper;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -16,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,15 +40,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ManageMeApp.class)
-@WithMockUser(username="admin", authorities={"ROLE_ADMIN"}, password = "admin")
 public class EmployeeResourceIntTest {
 
-    private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
+    private static final String DEFAULT_PHONE_NUMBER = "(7851814474";
+    private static final String UPDATED_PHONE_NUMBER = "+9-124 893 9011";
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
     
 
     @Autowired
@@ -103,9 +106,10 @@ public class EmployeeResourceIntTest {
         int databaseSizeBeforeCreate = employeeRepository.findAll().size();
 
         // Create the Employee
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
         restEmployeeMockMvc.perform(post("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Employee in the database
@@ -122,11 +126,12 @@ public class EmployeeResourceIntTest {
 
         // Create the Employee with an existing ID
         employee.setId(1L);
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEmployeeMockMvc.perform(post("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Employee in the database
@@ -142,10 +147,11 @@ public class EmployeeResourceIntTest {
         employee.setPhoneNumber(null);
 
         // Create the Employee, which fails.
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
 
         restEmployeeMockMvc.perform(post("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
         List<Employee> employeeList = employeeRepository.findAll();
@@ -192,7 +198,7 @@ public class EmployeeResourceIntTest {
     @Transactional
     public void updateEmployee() throws Exception {
         // Initialize the database
-        employeeService.save(employee);
+        employeeRepository.saveAndFlush(employee);
 
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
@@ -202,10 +208,11 @@ public class EmployeeResourceIntTest {
         em.detach(updatedEmployee);
         updatedEmployee
             .phoneNumber(UPDATED_PHONE_NUMBER);
+        EmployeeDTO employeeDTO = employeeMapper.toDto(updatedEmployee);
 
         restEmployeeMockMvc.perform(put("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEmployee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isOk());
 
         // Validate the Employee in the database
@@ -221,11 +228,12 @@ public class EmployeeResourceIntTest {
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
         // Create the Employee
+        EmployeeDTO employeeDTO = employeeMapper.toDto(employee);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restEmployeeMockMvc.perform(put("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
+            .content(TestUtil.convertObjectToJsonBytes(employeeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Employee in the database
@@ -237,7 +245,7 @@ public class EmployeeResourceIntTest {
     @Transactional
     public void deleteEmployee() throws Exception {
         // Initialize the database
-        employeeService.save(employee);
+        employeeRepository.saveAndFlush(employee);
 
         int databaseSizeBeforeDelete = employeeRepository.findAll().size();
 
@@ -264,5 +272,28 @@ public class EmployeeResourceIntTest {
         assertThat(employee1).isNotEqualTo(employee2);
         employee1.setId(null);
         assertThat(employee1).isNotEqualTo(employee2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(EmployeeDTO.class);
+        EmployeeDTO employeeDTO1 = new EmployeeDTO();
+        employeeDTO1.setId(1L);
+        EmployeeDTO employeeDTO2 = new EmployeeDTO();
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+        employeeDTO2.setId(employeeDTO1.getId());
+        assertThat(employeeDTO1).isEqualTo(employeeDTO2);
+        employeeDTO2.setId(2L);
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+        employeeDTO1.setId(null);
+        assertThat(employeeDTO1).isNotEqualTo(employeeDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(employeeMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(employeeMapper.fromId(null)).isNull();
     }
 }

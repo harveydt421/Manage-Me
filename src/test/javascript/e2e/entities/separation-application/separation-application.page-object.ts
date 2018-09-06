@@ -22,6 +22,7 @@ export class SeparationApplicationUpdatePage {
     reasonForLeavingInput = element(by.id('field_reasonForLeaving'));
     completedInput = element(by.id('field_completed'));
     employeeSelect = element(by.id('field_employee'));
+    functionalRepresentativeSelect = element(by.id('field_functionalRepresentative'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -71,6 +72,25 @@ export class SeparationApplicationUpdatePage {
 
     getEmployeeSelectedOption() {
         return this.employeeSelect.element(by.css('option:checked')).getText();
+    }
+
+    functionalRepresentativeSelectLastOption(): promise.Promise<void> {
+        return this.functionalRepresentativeSelect
+            .all(by.tagName('option'))
+            .last()
+            .click();
+    }
+
+    functionalRepresentativeSelectOption(option): promise.Promise<void> {
+        return this.functionalRepresentativeSelect.sendKeys(option);
+    }
+
+    getFunctionalRepresentativeSelect(): ElementFinder {
+        return this.functionalRepresentativeSelect;
+    }
+
+    getFunctionalRepresentativeSelectedOption() {
+        return this.functionalRepresentativeSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {

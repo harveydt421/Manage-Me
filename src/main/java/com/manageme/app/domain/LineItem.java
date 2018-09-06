@@ -1,9 +1,8 @@
 package com.manageme.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -28,12 +27,15 @@ public class LineItem implements Serializable {
     @Column(name = "feedback")
     private String feedback;
 
+    @Column(name = "cleared")
+    private Boolean cleared;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Asset assetOwed;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties("lineItems")
     private SeparationApplication separationApplication;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -56,6 +58,19 @@ public class LineItem implements Serializable {
 
     public void setFeedback(String feedback) {
         this.feedback = feedback;
+    }
+
+    public Boolean isCleared() {
+        return cleared;
+    }
+
+    public LineItem cleared(Boolean cleared) {
+        this.cleared = cleared;
+        return this;
+    }
+
+    public void setCleared(Boolean cleared) {
+        this.cleared = cleared;
     }
 
     public Asset getAssetOwed() {
@@ -110,6 +125,7 @@ public class LineItem implements Serializable {
         return "LineItem{" +
             "id=" + getId() +
             ", feedback='" + getFeedback() + "'" +
+            ", cleared='" + isCleared() + "'" +
             "}";
     }
 }

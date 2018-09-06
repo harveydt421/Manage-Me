@@ -12,20 +12,35 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_phoneNumber">Phone Number</label>
                     <input type="text" class="form-control" name="phoneNumber" id="field_phoneNumber"
-                        [(ngModel)]="employee.phoneNumber" required/>
+                        [(ngModel)]="employee.phoneNumber" required maxlength="50" pattern="(\+\d{1})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s-.]?\d{4}"/>
                     <div [hidden]="!(editForm.controls.phoneNumber?.dirty && editForm.controls.phoneNumber?.invalid)">
                         <small class="form-text text-danger"
                         [hidden]="!editForm.controls.phoneNumber?.errors?.required">
                         This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.phoneNumber?.errors?.maxlength">
+                        This field cannot be longer than 50 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.phoneNumber?.errors?.pattern">
+                            This field should follow pattern for "Phone Number".
                         </small>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" [(ngModel)]="employee.user" >
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="employee.userId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id === employee.user?.id ? employee.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_department">Department</label>
+                    <select class="form-control" id="field_department" name="department" [(ngModel)]="employee.departmentId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="departmentOption.id" *ngFor="let departmentOption of departments; trackBy: trackDepartmentById">{{departmentOption.name}}</option>
                     </select>
                 </div>
             </div>

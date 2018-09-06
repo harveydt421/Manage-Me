@@ -1,18 +1,21 @@
-import { IAsset } from 'app/shared/model//asset.model';
-import { ISeparationApplication } from 'app/shared/model//separation-application.model';
-
 export interface ILineItem {
     id?: number;
     feedback?: string;
-    assetOwed?: IAsset;
-    separationApplication?: ISeparationApplication;
+    cleared?: boolean;
+    assetOwedName?: string;
+    assetOwedId?: number;
+    separationApplicationId?: number;
 }
 
 export class LineItem implements ILineItem {
     constructor(
         public id?: number,
         public feedback?: string,
-        public assetOwed?: IAsset,
-        public separationApplication?: ISeparationApplication
-    ) {}
+        public cleared?: boolean,
+        public assetOwedName?: string,
+        public assetOwedId?: number,
+        public separationApplicationId?: number
+    ) {
+        this.cleared = false;
+    }
 }

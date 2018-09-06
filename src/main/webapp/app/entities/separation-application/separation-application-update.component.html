@@ -31,78 +31,47 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_dateOfSubmission">Date Of Submission</label>
                     <div class="d-flex">
-                        <input id="field_dateOfSubmission" type="datetime-local" class="form-control"
-                               name="dateOfSubmission" [(ngModel)]="dateOfSubmission" disabled/>
+                        <input id="field_dateOfSubmission" type="datetime-local" class="form-control" name="dateOfSubmission" [(ngModel)]="dateOfSubmission"
+                        />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_reasonForLeaving">Reason For Leaving</label>
                     <input type="text" class="form-control" name="reasonForLeaving" id="field_reasonForLeaving"
-                           [(ngModel)]="separationApplication.reasonForLeaving" required/>
-                    <div
-                        [hidden]="!(editForm.controls.reasonForLeaving?.dirty && editForm.controls.reasonForLeaving?.invalid)">
+                        [(ngModel)]="separationApplication.reasonForLeaving" required/>
+                    <div [hidden]="!(editForm.controls.reasonForLeaving?.dirty && editForm.controls.reasonForLeaving?.invalid)">
                         <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.reasonForLeaving?.errors?.required">
-                            This field is required.
+                        [hidden]="!editForm.controls.reasonForLeaving?.errors?.required">
+                        This field is required.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_completed">Completed</label>
                     <input type="checkbox" class="form-control" name="completed" id="field_completed"
-                           [(ngModel)]="separationApplication.completed"/>
+                        [(ngModel)]="separationApplication.completed" />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_employee">Employee</label>
-                    <select class="form-control" id="field_employee" name="employee"
-                            [(ngModel)]="separationApplication.employee">
+                    <select class="form-control" id="field_employee" name="employee" [(ngModel)]="separationApplication.employeeId">
                         <option [ngValue]="null"></option>
-                        <option
-                            [ngValue]="employeeOption.id === separationApplication.employee?.id ? separationApplication.employee : employeeOption"
-                            *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">
-                            {{employeeOption.user.firstName.concat(' ', employeeOption.user?.lastName)}}
-                        </option>
+                        <option [ngValue]="employeeOption.id" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.name}}</option>
                     </select>
                 </div>
-                <div *jhiHasAnyAuthority="'ROLE_FUNCTIONAL_REPRESENTATIVE'" class="form-group">
-                    <label class="form-control-label" for="field_lineItem"></label>
-                    <!-- <select class="form-control" id="field_lineItem" name="lineItem" [(ngModel)]="separationApplication.lineItem" ><option [ngValue]="null"></option></select>
-                     -->
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="enter line items" [(ngModel)]="lineItem"
-                               [ngModelOptions]="{standalone: true}"/>
-
-
-                        <div class="input-group-btn">
-                            <button class="btn btn-success btn-block" type="button" [routerLink]="['/line-item/new']">
-                                <span class="glyphicon glyphicon-ok"></span>Add Line Item
-                            </button>
-                        </div>
-                    </div>
-                    <ul class="list-group">
-                        <li *ngFor="let lineItem of lineItems" class="list-group-item">
-                            <span> {{ lineItem.feedback }} </span>
-                        </li>
-                    </ul>
+                <div class="form-group">
+                    <label for="field_functionalRepresentative">Functional Representative</label>
+                    <select class="form-control" id="field_functionalRepresentative" multiple name="functionalRepresentative" [(ngModel)]="separationApplication.functionalRepresentatives">
+                        <option [ngValue]="getSelected(separationApplication.functionalRepresentatives, employeeOption)" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.name}}</option>
+                    </select>
                 </div>
-            <div class="form-group" *jhiHasAnyAuthority="'ROLE_HUMAN_RESOURCES'">
-                <label for="field_functionalRepresentatives">Functional Representatives</label>
-                <select id="field_functionalRepresentatives" class="form-control" multiple name="functionalRepresentatives" [(ngModel)]="separationApplication.functionalRepresentatives">
-                    <option *ngFor="let functionalRepresentative of functionalRepresentatives; trackBy: trackEmployeeById" [ngValue]="functionalRepresentative.id">
-                        {{functionalRepresentative.user.firstName + ' ' + functionalRepresentative.user.lastName }}
-                    </option>
-                </select>
             </div>
-
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;
-                    <span>Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving"
-                        class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;
-                    <span>Save</span>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
         </form>

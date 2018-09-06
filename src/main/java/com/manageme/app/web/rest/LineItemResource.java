@@ -1,15 +1,14 @@
 package com.manageme.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.manageme.app.domain.LineItem;
 import com.manageme.app.service.LineItemService;
 import com.manageme.app.web.rest.errors.BadRequestAlertException;
 import com.manageme.app.web.rest.util.HeaderUtil;
+import com.manageme.app.service.dto.LineItemDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -38,19 +37,18 @@ public class LineItemResource {
     /**
      * POST  /line-items : Create a new lineItem.
      *
-     * @param lineItem the lineItem to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new lineItem, or with status 400 (Bad Request) if the lineItem has already an ID
+     * @param lineItemDTO the lineItemDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new lineItemDTO, or with status 400 (Bad Request) if the lineItem has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/line-items")
     @Timed
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
-    public ResponseEntity<LineItem> createLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
-        log.debug("REST request to save LineItem : {}", lineItem);
-        if (lineItem.getId() != null) {
+    public ResponseEntity<LineItemDTO> createLineItem(@RequestBody LineItemDTO lineItemDTO) throws URISyntaxException {
+        log.debug("REST request to save LineItem : {}", lineItemDTO);
+        if (lineItemDTO.getId() != null) {
             throw new BadRequestAlertException("A new lineItem cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LineItem result = lineItemService.save(lineItem);
+        LineItemDTO result = lineItemService.save(lineItemDTO);
         return ResponseEntity.created(new URI("/api/line-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -59,23 +57,22 @@ public class LineItemResource {
     /**
      * PUT  /line-items : Updates an existing lineItem.
      *
-     * @param lineItem the lineItem to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated lineItem,
-     * or with status 400 (Bad Request) if the lineItem is not valid,
-     * or with status 500 (Internal Server Error) if the lineItem couldn't be updated
+     * @param lineItemDTO the lineItemDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated lineItemDTO,
+     * or with status 400 (Bad Request) if the lineItemDTO is not valid,
+     * or with status 500 (Internal Server Error) if the lineItemDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/line-items")
     @Timed
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
-    public ResponseEntity<LineItem> updateLineItem(@RequestBody LineItem lineItem) throws URISyntaxException {
-        log.debug("REST request to update LineItem : {}", lineItem);
-        if (lineItem.getId() == null) {
+    public ResponseEntity<LineItemDTO> updateLineItem(@RequestBody LineItemDTO lineItemDTO) throws URISyntaxException {
+        log.debug("REST request to update LineItem : {}", lineItemDTO);
+        if (lineItemDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        LineItem result = lineItemService.save(lineItem);
+        LineItemDTO result = lineItemService.save(lineItemDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lineItem.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, lineItemDTO.getId().toString()))
             .body(result);
     }
 
@@ -86,7 +83,7 @@ public class LineItemResource {
      */
     @GetMapping("/line-items")
     @Timed
-    public List<LineItem> getAllLineItems() {
+    public List<LineItemDTO> getAllLineItems() {
         log.debug("REST request to get all LineItems");
         return lineItemService.findAll();
     }
@@ -94,26 +91,25 @@ public class LineItemResource {
     /**
      * GET  /line-items/:id : get the "id" lineItem.
      *
-     * @param id the id of the lineItem to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the lineItem, or with status 404 (Not Found)
+     * @param id the id of the lineItemDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the lineItemDTO, or with status 404 (Not Found)
      */
     @GetMapping("/line-items/{id}")
     @Timed
-    public ResponseEntity<LineItem> getLineItem(@PathVariable Long id) {
+    public ResponseEntity<LineItemDTO> getLineItem(@PathVariable Long id) {
         log.debug("REST request to get LineItem : {}", id);
-        Optional<LineItem> lineItem = lineItemService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(lineItem);
+        Optional<LineItemDTO> lineItemDTO = lineItemService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(lineItemDTO);
     }
 
     /**
      * DELETE  /line-items/:id : delete the "id" lineItem.
      *
-     * @param id the id of the lineItem to delete
+     * @param id the id of the lineItemDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/line-items/{id}")
     @Timed
-	@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FUNCTIONAL_REPRESENTATIVE')")
     public ResponseEntity<Void> deleteLineItem(@PathVariable Long id) {
         log.debug("REST request to delete LineItem : {}", id);
         lineItemService.delete(id);

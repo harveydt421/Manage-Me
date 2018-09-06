@@ -14,19 +14,24 @@
                     <input type="text" class="form-control" name="feedback" id="field_feedback"
                         [(ngModel)]="lineItem.feedback" />
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cleared">Cleared</label>
+                    <input type="checkbox" class="form-control" name="cleared" id="field_cleared"
+                        [(ngModel)]="lineItem.cleared" />
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_assetOwed">Asset Owed</label>
-                    <select class="form-control" id="field_assetOwed" name="assetOwed" [(ngModel)]="lineItem.assetOwed">
+                    <select class="form-control" id="field_assetOwed" name="assetOwed" [(ngModel)]="lineItem.assetOwedId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="assetOption.id === lineItem.assetOwed?.id ? lineItem.assetOwed : assetOption" *ngFor="let assetOption of assetoweds; trackBy: trackAssetById">{{assetOption.name}}</option>
+                        <option [ngValue]="assetOption.id" *ngFor="let assetOption of assetoweds; trackBy: trackAssetById">{{assetOption.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_separationApplication">Separation Application</label>
-                    <select class="form-control" id="field_separationApplication" name="separationApplication" [(ngModel)]="lineItem.separationApplication" >
+                    <select class="form-control" id="field_separationApplication" name="separationApplication" [(ngModel)]="lineItem.separationApplicationId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="separationApplicationOption.id === lineItem.separationApplication?.id ? lineItem.separationApplication : separationApplicationOption" *ngFor="let separationApplicationOption of separationapplications; trackBy: trackSeparationApplicationById">{{separationApplicationOption.employee.user.firstName.concat(' ', separationApplicationOption.employee.user.lastName)}}</option>
+                        <option [ngValue]="separationApplicationOption.id" *ngFor="let separationApplicationOption of separationapplications; trackBy: trackSeparationApplicationById">{{separationApplicationOption.id}}</option>
                     </select>
                 </div>
             </div>

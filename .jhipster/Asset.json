@@ -12,8 +12,10 @@
             "fieldName": "value",
             "fieldType": "BigDecimal",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
         }
     ],
     "relationships": [
@@ -26,7 +28,7 @@
     ],
     "changelogDate": "20180807172459",
     "entityTableName": "asset",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,

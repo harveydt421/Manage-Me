@@ -1,6 +1,7 @@
 package com.manageme.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,7 +29,9 @@ public class Employee implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Size(max = 50)
+    @Pattern(regexp = "(\\+\\d{1})?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s-.]?\\d{4}")
+    @Column(name = "phone_number", length = 50, nullable = false)
     private String phoneNumber;
 
     @OneToOne
@@ -38,6 +41,18 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "employee")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Asset> assets = new HashSet<>();
+
+    @OneToMany(mappedBy = "employee")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Notification> notifications = new HashSet<>();
+
+    @OneToOne(mappedBy = "employee")
+    @JsonIgnore
+    private SeparationApplication separationApplication;
+
+    @ManyToOne
+    @JsonIgnoreProperties("employees")
+    private Department department;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -97,6 +112,57 @@ public class Employee implements Serializable {
 
     public void setAssets(Set<Asset> assets) {
         this.assets = assets;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public Employee notifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    public Employee addNotification(Notification notification) {
+        this.notifications.add(notification);
+        notification.setEmployee(this);
+        return this;
+    }
+
+    public Employee removeNotification(Notification notification) {
+        this.notifications.remove(notification);
+        notification.setEmployee(null);
+        return this;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public SeparationApplication getSeparationApplication() {
+        return separationApplication;
+    }
+
+    public Employee separationApplication(SeparationApplication separationApplication) {
+        this.separationApplication = separationApplication;
+        return this;
+    }
+
+    public void setSeparationApplication(SeparationApplication separationApplication) {
+        this.separationApplication = separationApplication;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Employee department(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

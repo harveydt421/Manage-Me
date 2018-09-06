@@ -19,6 +19,7 @@ export class EmployeeUpdatePage {
     cancelButton = element(by.id('cancel-save'));
     phoneNumberInput = element(by.id('field_phoneNumber'));
     userSelect = element(by.id('field_user'));
+    departmentSelect = element(by.id('field_department'));
 
     getPageTitle() {
         return this.pageTitle.getText();
@@ -49,6 +50,25 @@ export class EmployeeUpdatePage {
 
     getUserSelectedOption() {
         return this.userSelect.element(by.css('option:checked')).getText();
+    }
+
+    departmentSelectLastOption(): promise.Promise<void> {
+        return this.departmentSelect
+            .all(by.tagName('option'))
+            .last()
+            .click();
+    }
+
+    departmentSelectOption(option): promise.Promise<void> {
+        return this.departmentSelect.sendKeys(option);
+    }
+
+    getDepartmentSelect(): ElementFinder {
+        return this.departmentSelect;
+    }
+
+    getDepartmentSelectedOption() {
+        return this.departmentSelect.element(by.css('option:checked')).getText();
     }
 
     save(): promise.Promise<void> {

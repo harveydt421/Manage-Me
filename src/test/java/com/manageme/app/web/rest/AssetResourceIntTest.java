@@ -5,6 +5,8 @@ import com.manageme.app.ManageMeApp;
 import com.manageme.app.domain.Asset;
 import com.manageme.app.repository.AssetRepository;
 import com.manageme.app.service.AssetService;
+import com.manageme.app.service.dto.AssetDTO;
+import com.manageme.app.service.mapper.AssetMapper;
 import com.manageme.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -44,12 +46,15 @@ public class AssetResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_VALUE = new BigDecimal(2);
+    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(0);
+    private static final BigDecimal UPDATED_VALUE = new BigDecimal(1);
 
     @Autowired
     private AssetRepository assetRepository;
 
+
+    @Autowired
+    private AssetMapper assetMapper;
     
 
     @Autowired
@@ -106,9 +111,10 @@ public class AssetResourceIntTest {
         int databaseSizeBeforeCreate = assetRepository.findAll().size();
 
         // Create the Asset
+        AssetDTO assetDTO = assetMapper.toDto(asset);
         restAssetMockMvc.perform(post("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(asset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Asset in the database
@@ -126,11 +132,12 @@ public class AssetResourceIntTest {
 
         // Create the Asset with an existing ID
         asset.setId(1L);
+        AssetDTO assetDTO = assetMapper.toDto(asset);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAssetMockMvc.perform(post("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(asset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Asset in the database
@@ -146,10 +153,11 @@ public class AssetResourceIntTest {
         asset.setName(null);
 
         // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
 
         restAssetMockMvc.perform(post("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(asset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isBadRequest());
 
         List<Asset> assetList = assetRepository.findAll();
@@ -164,10 +172,11 @@ public class AssetResourceIntTest {
         asset.setValue(null);
 
         // Create the Asset, which fails.
+        AssetDTO assetDTO = assetMapper.toDto(asset);
 
         restAssetMockMvc.perform(post("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(asset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isBadRequest());
 
         List<Asset> assetList = assetRepository.findAll();
@@ -216,7 +225,7 @@ public class AssetResourceIntTest {
     @Transactional
     public void updateAsset() throws Exception {
         // Initialize the database
-        assetService.save(asset);
+        assetRepository.saveAndFlush(asset);
 
         int databaseSizeBeforeUpdate = assetRepository.findAll().size();
 
@@ -227,10 +236,11 @@ public class AssetResourceIntTest {
         updatedAsset
             .name(UPDATED_NAME)
             .value(UPDATED_VALUE);
+        AssetDTO assetDTO = assetMapper.toDto(updatedAsset);
 
         restAssetMockMvc.perform(put("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedAsset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isOk());
 
         // Validate the Asset in the database
@@ -247,11 +257,12 @@ public class AssetResourceIntTest {
         int databaseSizeBeforeUpdate = assetRepository.findAll().size();
 
         // Create the Asset
+        AssetDTO assetDTO = assetMapper.toDto(asset);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restAssetMockMvc.perform(put("/api/assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(asset)))
+            .content(TestUtil.convertObjectToJsonBytes(assetDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Asset in the database
@@ -263,7 +274,7 @@ public class AssetResourceIntTest {
     @Transactional
     public void deleteAsset() throws Exception {
         // Initialize the database
-        assetService.save(asset);
+        assetRepository.saveAndFlush(asset);
 
         int databaseSizeBeforeDelete = assetRepository.findAll().size();
 
@@ -290,5 +301,28 @@ public class AssetResourceIntTest {
         assertThat(asset1).isNotEqualTo(asset2);
         asset1.setId(null);
         assertThat(asset1).isNotEqualTo(asset2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(AssetDTO.class);
+        AssetDTO assetDTO1 = new AssetDTO();
+        assetDTO1.setId(1L);
+        AssetDTO assetDTO2 = new AssetDTO();
+        assertThat(assetDTO1).isNotEqualTo(assetDTO2);
+        assetDTO2.setId(assetDTO1.getId());
+        assertThat(assetDTO1).isEqualTo(assetDTO2);
+        assetDTO2.setId(2L);
+        assertThat(assetDTO1).isNotEqualTo(assetDTO2);
+        assetDTO1.setId(null);
+        assertThat(assetDTO1).isNotEqualTo(assetDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(assetMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(assetMapper.fromId(null)).isNull();
     }
 }
