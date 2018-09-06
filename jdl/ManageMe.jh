@@ -36,16 +36,19 @@ relationship OneToOne {
   LineItem{assetOwed(name)} to Asset
 }
 relationship OneToMany {
-  Employee{asset(name)} to Asset{employee}
-  Department{employee} to Employee{department(name)}
-  SeparationApplication{lineItem} to LineItem{separationApplication}
-  SeparationApplication{functionalRepresentative} to Employee,
+  Employee{asset(name)} to Asset{employee},
+  Department{employee} to Employee{department(name)},
+  SeparationApplication{lineItem} to LineItem{separationApplication},
   Employee{notification} to Notification{employee}
+}
+
+relationship ManyToMany {
+  SeparationApplication{functionalRepresentative} to Employee
 }
 
 entity Notification {
   message String maxlength(100) required
 }
 
-service Employee, Department, Location, Asset, SeparationApplication, LineItem with serviceClass
+service * with serviceClass
 dto * with mapstruct
