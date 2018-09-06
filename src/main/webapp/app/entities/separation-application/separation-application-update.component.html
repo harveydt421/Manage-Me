@@ -64,11 +64,6 @@
                     <label class="form-control-label" for="field_lineItem"></label>
                     <!-- <select class="form-control" id="field_lineItem" name="lineItem" [(ngModel)]="separationApplication.lineItem" ><option [ngValue]="null"></option></select>
                      -->
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="enter line items" [(ngModel)]="lineItem"
-                               [ngModelOptions]="{standalone: true}"/>
-
-
                         <div class="input-group-btn">
                             <button class="btn btn-success btn-block" type="button" [routerLink]="['/line-item/new']">
                                 <span class="glyphicon glyphicon-ok"></span>Add Line Item

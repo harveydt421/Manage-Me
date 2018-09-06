@@ -11,11 +11,10 @@
             <thead>
             <tr>
                 <th><span>ID</span></th>
+                <th><span>Employee</span></th>
                 <th><span>Final Date</span></th>
                 <th><span>Submit Date</span></th>
-           
-                <th><span>Reason For Leaving</span></th>
-                <th><span>Employee</span></th>
+                <th><span>Line Item(s)</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -27,16 +26,6 @@
                 <td *ngIf="separationApplication.completedDate == null"><a
                     [routerLink]="['/separation-application', separationApplication.id, 'view' ]">{{separationApplication.id}}</a>
                 </td>
-                <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving
-                    | date:'mediumDate'}}
-                </td>
-                <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfSubmission
-                    | date:'medium'}}
-                </td>
-              
-                </td>
-                <td *ngIf="separationApplication.completedDate == null">{{separationApplication.reasonForLeaving}}</td>
-
                 <td *ngIf="separationApplication.completedDate == null">
                     <div *ngIf="separationApplication.employee">
                         <a
@@ -44,8 +33,15 @@
                             ', separationApplication.employee.user.lastName)}}</a>
                     </div>
                 </td>
-
-
+                <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving
+                    | date:'mediumDate'}}
+                </td>
+                <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfSubmission
+                    | date:'mediumDate'}}
+                </td>
+              	<div  *ngFor="let lineItem of separationApplication.lineItems">
+                        <a [routerLink]="['../line-item', lineItem?.id, 'view' ]" >{{lineItem?.assetOwed.name}}</a>
+                </div>
                 <td class="text-right"
                     *ngIf="separationApplication.completed == null"></td>
             </tr>
@@ -97,32 +93,6 @@
                             ', separationApplication.employee.user.lastName)}}</a>
                     </div>
                 </td>
-                
-                <td class="text-right"
-						*ngIf="separationApplication.completed !== null">
-						<div class="btn-group flex-btn-group-container">
-							<button type="submit"
-								[routerLink]="['/separation-application', separationApplication.id, 'view' ]"
-								class="btn btn-info btn-sm">
-								<fa-icon [icon]="'eye'"></fa-icon>
-								<span class="d-none d-md-inline">View</span>
-							</button>
-							<button type="submit"
-								[routerLink]="['/separation-application', separationApplication.id, 'edit']"
-								class="btn btn-primary btn-sm">
-								<fa-icon [icon]="'pencil-alt'"></fa-icon>
-								<span class="d-none d-md-inline">Edit</span>
-							</button>
-							<button type="submit"
-								[routerLink]="['/', { outlets: { popup: 'separation-application/'+ separationApplication.id + '/delete'} }]"
-								replaceUrl="true" queryParamsHandling="merge"
-								class="btn btn-danger btn-sm">
-								<fa-icon [icon]="'times'"></fa-icon>
-								<span class="d-none d-md-inline">Delete</span>
-							</button>
-						</div>
-					</td>
-					
 					<td class="text-right"
 						*ngIf="separationApplication.completed == null">
 					</td>
