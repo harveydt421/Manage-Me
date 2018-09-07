@@ -39,7 +39,7 @@
                 <td>{{separationApplication.completed}}</td>
                 <td>
                     <div *ngIf="separationApplication.employeeId">
-                        <a [routerLink]="['../employee', separationApplication.employeeId , 'view' ]" >{{separationApplication.employeeId}}</a>
+                        <a [routerLink]="['../employee', separationApplication.employeeId , 'view' ]" >{{separationApplication.employeeName}}</a>
                     </div>
                 </td>
                 <td>
