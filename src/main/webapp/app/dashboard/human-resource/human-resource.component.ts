@@ -5,7 +5,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ISeparationApplication } from 'app/shared/model/separation-application.model';
 import { Principal } from 'app/core';
 import { SeparationApplicationService } from 'app/entities/separation-application';
-import { Moment } from 'moment';
 import { LineItemService } from 'app/entities/line-item/line-item.service';
 import { ILineItem } from 'app/shared/model/line-item.model';
 
@@ -14,7 +13,6 @@ import { ILineItem } from 'app/shared/model/line-item.model';
     templateUrl: './human-resource.component.html',
     styles: []
 })
-
 export class HumanResourceComponent implements OnInit, OnDestroy {
     separationApplications: ISeparationApplication[];
     currentAccount: any;
@@ -25,18 +23,9 @@ export class HumanResourceComponent implements OnInit, OnDestroy {
         private separationApplicationService: SeparationApplicationService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal,
-        private lineItemService: LineItemService
+        private principal: Principal
     ) {}
 
-    getLineItem() {
-        this.lineItemService.query().subscribe(
-        (res: HttpResponse<ISeparationApplication[]>) => {
-                this.lineItems = res.body;
-        },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-    }
     loadAll() {
         this.separationApplicationService.query().subscribe(
             (res: HttpResponse<ISeparationApplication[]>) => {
@@ -52,7 +41,6 @@ export class HumanResourceComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInSeparationApplications();
-        this.getLineItem();
     }
 
     ngOnDestroy() {

@@ -17,14 +17,12 @@ export class FunctionalRepresentativeComponent implements OnInit, OnDestroy {
     separationApplications: ISeparationApplication[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    lineItems: ILineItem[];
 
     constructor(
         private separationApplicationService: SeparationApplicationService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal,
-        private lineItemService: LineItemService
+        private principal: Principal
     ) {}
 
     loadAll() {
@@ -36,22 +34,12 @@ export class FunctionalRepresentativeComponent implements OnInit, OnDestroy {
         );
     }
 
-    getLineItem() {
-        this.lineItemService.query().subscribe(
-        (res: HttpResponse<ISeparationApplication[]>) => {
-                this.lineItems = res.body;
-        },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-    }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInSeparationApplications();
-        this.getLineItem();
     }
 
     ngOnDestroy() {

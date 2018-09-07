@@ -30,6 +30,16 @@ public class SeparationApplicationDTO implements Serializable {
 
     private Set<EmployeeDTO> functionalRepresentatives = new HashSet<>();
 
+    private Set<LineItemDTO> lineItems = new HashSet<>();
+
+    public Set<LineItemDTO> getLineItems() {
+        return lineItems;
+    }
+
+    public void setLineItems(Set<LineItemDTO> lineItems) {
+        this.lineItems = lineItems;
+    }
+
     public Long getId() {
         return id;
     }

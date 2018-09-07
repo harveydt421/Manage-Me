@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity SeparationApplication and its DTO SeparationApplicationDTO.
  */
-@Mapper(componentModel = "spring", uses = {EmployeeMapper.class})
+@Mapper(componentModel = "spring", uses = {EmployeeMapper.class, LineItemMapper.class})
 public interface SeparationApplicationMapper extends EntityMapper<SeparationApplicationDTO, SeparationApplication> {
 
     @Mapping(source = "employee.id", target = "employeeId")

@@ -23,8 +23,8 @@
                 </td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving | date:'mediumDate'}}</td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfSubmission | date:'mediumDate'}}</td>
-				<div  *ngFor="let lineItem of lineItems">
-                        <a [routerLink]="['../line-item', lineItem?.id, 'view' ]" >{{lineItem?.assetOwedName}}</a>
+				<div  *ngFor="let lineItem of separationApplication.lineItems; let last = last">
+                        <a [routerLink]="['../line-item', lineItem?.id, 'view' ]" >{{lineItem?.assetOwedName}}{{last ? '' : ', '}}</a>
                 </div>
                 <td class="text-right" *ngIf="separationApplication.completedDate == null">
 
