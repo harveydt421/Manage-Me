@@ -70,7 +70,9 @@
                 <div class="form-group" *jhiHasAnyAuthority="'ROLE_HUMAN_RESOURCES'">
                     <label for="field_functionalRepresentative">Functional Representative</label>
                     <select class="form-control" id="field_functionalRepresentative" multiple name="functionalRepresentative" [(ngModel)]="separationApplication.functionalRepresentatives">
-                        <option [ngValue]="getSelected(separationApplication.functionalRepresentatives, employeeOption)" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.name}}</option>
+                        <ng-container  *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">
+                            <option [ngValue]="getSelected(separationApplication.functionalRepresentatives, employeeOption)" *ngIf="employeeOption.authorities.includes('ROLE_FUNCTIONAL_REPRESENTATIVE')">{{employeeOption.name}}</option>
+                        </ng-container>
                     </select>
             </div>
             <div>
