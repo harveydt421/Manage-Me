@@ -29,7 +29,7 @@
                 <td *ngIf="separationApplication.completedDate == null">
                     <div *ngIf="separationApplication.employee">
                         <a
-                            [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]">{{separationApplication.employee.id}}</a>
+                            [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeId}}</a>
                     </div>
                 </td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving
@@ -88,8 +88,7 @@
                 <td *ngIf="separationApplication.completedDate != null">
                     <div *ngIf="separationApplication.employee">
                         <a
-                            [routerLink]="['../employee', separationApplication.employee?.id, 'view' ]">{{separationApplication.employee.user.firstName.concat('
-                            ', separationApplication.employee.user.lastName)}}</a>
+                            [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName}}</a>
                     </div>
                 </td>
 					<td class="text-right"
