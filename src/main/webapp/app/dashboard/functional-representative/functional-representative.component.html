@@ -19,7 +19,7 @@
 
             	<tr *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
                 <td *ngIf="separationApplication.completedDate == null">
-                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName)}}</a>
+                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName}}</a>
                 </td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfLeaving | date:'mediumDate'}}</td>
                 <td *ngIf="separationApplication.completedDate == null">{{separationApplication.dateOfSubmission | date:'mediumDate'}}</td>
@@ -62,7 +62,7 @@
                 *ngFor="let separationApplication of separationApplications ;trackBy: trackId">
 
                 <td *ngIf="separationApplication.completedDate != null">
-                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName)}}</a>
+                    <a [routerLink]="['../employee', separationApplication.employeeId, 'view' ]">{{separationApplication.employeeName}}</a>
                 </td>
 
                 <td *ngIf="separationApplication.completedDate != null"><a
