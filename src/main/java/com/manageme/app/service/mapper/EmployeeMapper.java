@@ -15,6 +15,7 @@ public interface EmployeeMapper extends EntityMapper<EmployeeDTO, Employee> {
     @Mapping(source = "department.id", target = "departmentId")
     @Mapping(source = "department.name", target = "departmentName")
     @Mapping(target = "name", expression = "java(employee.getUser().getName())")
+    @Mapping(target = "authorities", expression = "java(employee.getUser().getAuthorities().stream().map(com.manageme.app.domain.Authority::getName).collect(java.util.stream.Collectors.toSet()))")
     EmployeeDTO toDto(Employee employee);
 
     @Mapping(source = "userId", target = "user")

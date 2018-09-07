@@ -11,6 +11,7 @@ export interface IEmployee {
     separationApplicationId?: number;
     departmentName?: string;
     departmentId?: number;
+    authorities?: string[];
 }
 
 export class Employee implements IEmployee {
@@ -23,6 +24,7 @@ export class Employee implements IEmployee {
         public notifications?: INotification[],
         public separationApplicationId?: number,
         public departmentName?: string,
-        public departmentId?: number
+        public departmentId?: number,
+        public authorities?: string[]
     ) {}
 }

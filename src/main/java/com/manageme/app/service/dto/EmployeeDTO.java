@@ -2,7 +2,9 @@ package com.manageme.app.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Employee entity.
@@ -23,6 +25,16 @@ public class EmployeeDTO implements Serializable {
     private String departmentName;
 
     private String name;
+
+    private Set<String> authorities = new HashSet<>();
+
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
+    }
 
     public String getName() {
         return name;
