@@ -5,6 +5,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ISeparationApplication } from 'app/shared/model/separation-application.model';
 import { Principal } from 'app/core';
 import { SeparationApplicationService } from 'app/entities/separation-application';
+import { LineItemService } from 'app/entities/line-item/line-item.service';
+import { ILineItem } from 'app/shared/model/line-item.model';
 
 @Component({
     selector: 'jhi-functional-representative',
@@ -15,12 +17,14 @@ export class FunctionalRepresentativeComponent implements OnInit, OnDestroy {
     separationApplications: ISeparationApplication[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    lineItems: ILineItem[];
 
     constructor(
         private separationApplicationService: SeparationApplicationService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal
+        private principal: Principal,
+        private lineItemService: LineItemService
     ) {}
 
     loadAll() {
@@ -32,12 +36,22 @@ export class FunctionalRepresentativeComponent implements OnInit, OnDestroy {
         );
     }
 
+    getLineItem() {
+        this.lineItemService.query().subscribe(
+        (res: HttpResponse<ISeparationApplication[]>) => {
+                this.lineItems = res.body;
+        },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInSeparationApplications();
+        this.getLineItem();
     }
 
     ngOnDestroy() {
