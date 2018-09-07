@@ -37,8 +37,8 @@
                     | date:'mediumDate'}}
                 </td>
                 <td>
-              	<div *ngFor="let lineItem of lineItems">
-                        <a [routerLink]="['/line-item', lineItem?.id, 'view']">{{lineItem?.assetOwedName}}</a>
+              	<div *ngFor="let lineItem of separationApplication.lineItems; let last = last">
+                        <a [routerLink]="['/line-item', lineItem?.id, 'view']">{{lineItem?.assetOwedName}}{{last ? '' : ', '}}</a>
                     </div>
                 </td>
                 <td class="text-right"
