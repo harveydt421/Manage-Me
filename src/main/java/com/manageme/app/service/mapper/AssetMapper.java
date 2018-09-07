@@ -12,7 +12,7 @@ import org.mapstruct.*;
 public interface AssetMapper extends EntityMapper<AssetDTO, Asset> {
 
     @Mapping(source = "employee.id", target = "employeeId")
-    @Mapping(target = "employeeName", expression = "java(asset.getEmployee().getUser().getName())")
+    @Mapping(target = "employeeName", expression = "java(fullName(asset.getEmployee()))")
     AssetDTO toDto(Asset asset);
 
     @Mapping(source = "employeeId", target = "employee")
@@ -25,5 +25,18 @@ public interface AssetMapper extends EntityMapper<AssetDTO, Asset> {
         Asset asset = new Asset();
         asset.setId(id);
         return asset;
+    }
+    
+    default String fullName(Employee employee) {
+    	if (employee == null) {
+    		return null;
+    	}
+		
+    	User user = employee.getUser();
+    	if (user == null) {
+    		return null;
+    	}
+    	
+    	return user.getName();
     }
 }

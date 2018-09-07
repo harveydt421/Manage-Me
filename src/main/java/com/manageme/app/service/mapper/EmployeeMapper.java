@@ -3,6 +3,9 @@ package com.manageme.app.service.mapper;
 import com.manageme.app.domain.*;
 import com.manageme.app.service.dto.EmployeeDTO;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.mapstruct.*;
 
 /**
@@ -14,8 +17,8 @@ public interface EmployeeMapper extends EntityMapper<EmployeeDTO, Employee> {
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "department.id", target = "departmentId")
     @Mapping(source = "department.name", target = "departmentName")
-    @Mapping(target = "name", expression = "java(employee.getUser().getName())")
-    @Mapping(target = "authorities", expression = "java(employee.getUser().getAuthorities().stream().map(com.manageme.app.domain.Authority::getName).collect(java.util.stream.Collectors.toSet()))")
+    @Mapping(target = "name", expression = "java(fullName(employee))")
+    @Mapping(target = "authorities", expression = "java(authoritiesToStringSet(employee.getUser()))")
     EmployeeDTO toDto(Employee employee);
 
     @Mapping(source = "userId", target = "user")
@@ -32,5 +35,29 @@ public interface EmployeeMapper extends EntityMapper<EmployeeDTO, Employee> {
         Employee employee = new Employee();
         employee.setId(id);
         return employee;
+    }
+    
+    default Set<String> authoritiesToStringSet(User user) {
+    	if (user == null) {
+    		return null;
+    	}
+    	Set<Authority> authorities = user.getAuthorities();
+    	if (authorities == null) {
+    		return null;
+    	}
+    	return authorities.stream().map(Authority::getName).collect(Collectors.toSet());
+    }
+    
+    default String fullName(Employee employee) {
+    	if (employee == null) {
+    		return null;
+    	}
+		
+    	User user = employee.getUser();
+    	if (user == null) {
+    		return null;
+    	}
+    	
+    	return user.getName();
     }
 }

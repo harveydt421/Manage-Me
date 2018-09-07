@@ -13,7 +13,7 @@ public interface DepartmentMapper extends EntityMapper<DepartmentDTO, Department
 
     @Mapping(source = "head.id", target = "headId")
     @Mapping(source = "representative.id", target = "representativeId")
-    @Mapping(target = "representativeName", expression = "java(department.getRepresentative().getUser().getName())")
+    @Mapping(target = "representativeName", expression = "java(fullName(department.getRepresentative()))")
     @Mapping(source = "location.id", target = "locationId")
     DepartmentDTO toDto(Department department);
 
@@ -30,5 +30,18 @@ public interface DepartmentMapper extends EntityMapper<DepartmentDTO, Department
         Department department = new Department();
         department.setId(id);
         return department;
+    }
+    
+    default String fullName(Employee employee) {
+    	if (employee == null) {
+    		return null;
+    	}
+		
+    	User user = employee.getUser();
+    	if (user == null) {
+    		return null;
+    	}
+    	
+    	return user.getName();
     }
 }
