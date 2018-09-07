@@ -44,7 +44,7 @@
                 </td>
                 <td>
                     <span *ngFor="let functionalRepresentative of separationApplication.functionalRepresentatives; let last = last">
-                            <a class="form-control-static" [routerLink]="['../employee', functionalRepresentative?.id, 'view' ]">{{functionalRepresentative.id}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static" [routerLink]="['../employee', functionalRepresentative?.id, 'view' ]">{{functionalRepresentative.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">
