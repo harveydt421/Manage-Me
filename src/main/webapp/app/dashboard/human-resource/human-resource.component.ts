@@ -6,6 +6,8 @@ import { ISeparationApplication } from 'app/shared/model/separation-application.
 import { Principal } from 'app/core';
 import { SeparationApplicationService } from 'app/entities/separation-application';
 import { Moment } from 'moment';
+import { LineItemService } from 'app/entities/line-item/line-item.service';
+import { ILineItem } from 'app/shared/model/line-item.model';
 
 @Component({
     selector: 'jhi-human-resource',
@@ -17,14 +19,24 @@ export class HumanResourceComponent implements OnInit, OnDestroy {
     separationApplications: ISeparationApplication[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    lineItems: ILineItem[];
 
     constructor(
         private separationApplicationService: SeparationApplicationService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private principal: Principal
+        private principal: Principal,
+        private lineItemService: LineItemService
     ) {}
 
+    getLineItem() {
+        this.lineItemService.query().subscribe(
+        (res: HttpResponse<ISeparationApplication[]>) => {
+                this.lineItems = res.body;
+        },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
     loadAll() {
         this.separationApplicationService.query().subscribe(
             (res: HttpResponse<ISeparationApplication[]>) => {
@@ -40,6 +52,7 @@ export class HumanResourceComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInSeparationApplications();
+        this.getLineItem();
     }
 
     ngOnDestroy() {
