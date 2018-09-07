@@ -12,7 +12,7 @@ import org.mapstruct.*;
 public interface SeparationApplicationMapper extends EntityMapper<SeparationApplicationDTO, SeparationApplication> {
 
     @Mapping(source = "employee.id", target = "employeeId")
-    @Mapping(target = "employeeName", expression = "java(separationApplication.getEmployee().getUser().getName())")
+    @Mapping(target = "employeeName", expression = "java(fullName(separationApplication.getEmployee()))")
     SeparationApplicationDTO toDto(SeparationApplication separationApplication);
 
     @Mapping(source = "employeeId", target = "employee")
@@ -26,5 +26,18 @@ public interface SeparationApplicationMapper extends EntityMapper<SeparationAppl
         SeparationApplication separationApplication = new SeparationApplication();
         separationApplication.setId(id);
         return separationApplication;
+    }
+    
+    default String fullName(Employee employee) {
+    	if (employee == null) {
+    		return null;
+    	}
+		
+    	User user = employee.getUser();
+    	if (user == null) {
+    		return null;
+    	}
+    	
+    	return user.getName();
     }
 }
