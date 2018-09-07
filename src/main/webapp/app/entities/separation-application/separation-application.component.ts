@@ -5,7 +5,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ISeparationApplication } from 'app/shared/model/separation-application.model';
 import { Principal } from 'app/core';
 import { SeparationApplicationService } from './separation-application.service';
-import { saveAs } from 'file-saver/FileSaver';
 import { Moment } from 'moment';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 
