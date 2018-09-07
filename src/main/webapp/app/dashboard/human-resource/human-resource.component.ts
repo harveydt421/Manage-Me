@@ -5,8 +5,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ISeparationApplication } from 'app/shared/model/separation-application.model';
 import { Principal } from 'app/core';
 import { SeparationApplicationService } from 'app/entities/separation-application';
-import { LineItemService } from 'app/entities/line-item/line-item.service';
-import { ILineItem } from 'app/shared/model/line-item.model';
 
 @Component({
     selector: 'jhi-human-resource',
@@ -17,7 +15,6 @@ export class HumanResourceComponent implements OnInit, OnDestroy {
     separationApplications: ISeparationApplication[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    lineItems: ILineItem[];
 
     constructor(
         private separationApplicationService: SeparationApplicationService,

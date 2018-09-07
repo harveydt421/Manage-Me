@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { humanResourceRoute } from 'app/dashboard/human-resource/human-resource.route';
 import { HumanResourceComponent } from 'app/dashboard/human-resource/human-resource.component';
 import { dashboardRoute } from 'app/dashboard/dashboard.route';
 import { DashboardComponent } from 'app/dashboard/dashboard.component';
 import { ManageMeSharedModule } from 'app/shared';
 import { FunctionalRepresentativeComponent } from './functional-representative/functional-representative.component';
 
-const LAYOUT_ROUTES = [humanResourceRoute];
+const LAYOUT_ROUTES = [];
 const ENTITY_STATES = [...dashboardRoute];
 
 @NgModule({

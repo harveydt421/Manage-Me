@@ -9,6 +9,7 @@ import { User, UserService } from 'app/core';
 })
 export class UserMgmtUpdateComponent implements OnInit {
     user: User;
+    error: any;
     languages: any[];
     authorities: any[];
     isSaving: boolean;
@@ -38,6 +39,7 @@ export class UserMgmtUpdateComponent implements OnInit {
         } else {
             this.doNotMatch = null;
             this.isSaving = true;
+            this.error = null;
             if (this.user.id !== null) {
                 this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
             } else {
@@ -49,10 +51,12 @@ export class UserMgmtUpdateComponent implements OnInit {
 
     private onSaveSuccess(result) {
         this.isSaving = false;
+        this.error = null;
         this.previousState();
     }
 
     private onSaveError() {
         this.isSaving = false;
+        this.error = 'ERROR';
     }
 }
